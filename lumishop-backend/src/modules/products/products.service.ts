@@ -84,6 +84,32 @@ export class ProductsService {
   }
 
   /**
+   * GET /products/:id/recommendations — Gợi ý tối đa 4 sản phẩm cùng danh mục đang bán
+   */
+  async getRecommendations(productId: string): Promise<Product[]> {
+    const products = await this.dbService.getData<Product>('products');
+    const current = products.find((p) => p.id === productId);
+
+    if (!current) {
+      throw new NotFoundException(`Không tìm thấy sản phẩm với mã: ${productId}`);
+    }
+
+    const selling = products.filter(
+      (p) => p.id !== productId && p.trangThai === 'DangBan',
+    );
+
+    const sameCategory = current.categoryId
+      ? selling.filter((p) => p.categoryId === current.categoryId)
+      : [];
+
+    if (sameCategory.length > 0) {
+      return sameCategory.slice(0, 4);
+    }
+
+    return this.shuffle(selling).slice(0, 4);
+  }
+
+  /**
    * POST /products — Thêm sản phẩm mới (Admin)
    */
   async create(dto: CreateProductDto): Promise<Product> {
@@ -158,6 +184,15 @@ export class ProductsService {
       success: true,
       message: `Đã xóa sản phẩm "${removedName}" (${id}) thành công`,
     };
+  }
+
+  private shuffle<T>(items: T[]): T[] {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
   }
 
   private nextProductId(products: Product[]): string {

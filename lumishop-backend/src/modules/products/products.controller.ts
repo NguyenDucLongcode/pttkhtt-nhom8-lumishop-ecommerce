@@ -52,6 +52,23 @@ export class ProductsController {
   }
 
   /**
+   * GET /products/:id/recommendations — Gợi ý sản phẩm cùng danh mục (Public)
+   */
+  @Public()
+  @Get(':id/recommendations')
+  @ApiOperation({ summary: 'Lấy danh sách sản phẩm gợi ý cùng danh mục' })
+  @ApiParam({ name: 'id', description: 'Mã sản phẩm đang xem', example: 'SP001' })
+  @ApiResponse({
+    status: 200,
+    description: 'Tối đa 4 sản phẩm đang bán cùng danh mục (không gồm sản phẩm hiện tại).',
+    type: [ProductDto],
+  })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy sản phẩm.' })
+  async getRecommendations(@Param('id') id: string): Promise<Product[]> {
+    return this.productsService.getRecommendations(id);
+  }
+
+  /**
    * GET /products/:id — Xem chi tiết sản phẩm (Public)
    */
   @Public()

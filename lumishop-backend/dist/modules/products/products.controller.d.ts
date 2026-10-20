@@ -6,6 +6,7 @@ export declare class ProductsController {
     private readonly productsService;
     constructor(productsService: ProductsService);
     findAll(query: QueryProductDto): Promise<PaginatedProductsResult>;
+    getRecommendations(id: string): Promise<Product[]>;
     findOne(id: string): Promise<Product>;
     create(dto: CreateProductDto): Promise<Product>;
     update(id: string, dto: UpdateProductDto): Promise<Product>;

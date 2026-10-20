@@ -27,6 +27,9 @@ let ProductsController = class ProductsController {
     async findAll(query) {
         return this.productsService.findAll(query);
     }
+    async getRecommendations(id) {
+        return this.productsService.getRecommendations(id);
+    }
     async findOne(id) {
         return this.productsService.findOne(id);
     }
@@ -56,6 +59,22 @@ __decorate([
     __metadata("design:paramtypes", [QueryProductDto]),
     __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "findAll", null);
+__decorate([
+    Public(),
+    Get(':id/recommendations'),
+    ApiOperation({ summary: 'Lấy danh sách sản phẩm gợi ý cùng danh mục' }),
+    ApiParam({ name: 'id', description: 'Mã sản phẩm đang xem', example: 'SP001' }),
+    ApiResponse({
+        status: 200,
+        description: 'Tối đa 4 sản phẩm đang bán cùng danh mục (không gồm sản phẩm hiện tại).',
+        type: [ProductDto],
+    }),
+    ApiResponse({ status: 404, description: 'Không tìm thấy sản phẩm.' }),
+    __param(0, Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ProductsController.prototype, "getRecommendations", null);
 __decorate([
     Public(),
     Get(':id'),

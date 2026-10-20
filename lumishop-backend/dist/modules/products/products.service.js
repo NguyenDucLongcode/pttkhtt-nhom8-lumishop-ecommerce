@@ -49,6 +49,21 @@ let ProductsService = ProductsService_1 = class ProductsService {
         }
         return product;
     }
+    async getRecommendations(productId) {
+        const products = await this.dbService.getData('products');
+        const current = products.find((p) => p.id === productId);
+        if (!current) {
+            throw new NotFoundException(`Không tìm thấy sản phẩm với mã: ${productId}`);
+        }
+        const selling = products.filter((p) => p.id !== productId && p.trangThai === 'DangBan');
+        const sameCategory = current.categoryId
+            ? selling.filter((p) => p.categoryId === current.categoryId)
+            : [];
+        if (sameCategory.length > 0) {
+            return sameCategory.slice(0, 4);
+        }
+        return this.shuffle(selling).slice(0, 4);
+    }
     async create(dto) {
         const products = await this.dbService.getData('products');
         const now = new Date().toISOString();
@@ -109,6 +124,14 @@ let ProductsService = ProductsService_1 = class ProductsService {
             success: true,
             message: `Đã xóa sản phẩm "${removedName}" (${id}) thành công`,
         };
+    }
+    shuffle(items) {
+        const copy = [...items];
+        for (let i = copy.length - 1; i > 0; i -= 1) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
     }
     nextProductId(products) {
         let maxNum = 0;
