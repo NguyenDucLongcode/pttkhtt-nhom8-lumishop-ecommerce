@@ -1,0 +1,152 @@
+[
+  {
+    "id": "DH001",
+    "maKH": "KH002",
+    "diaChiGiao": "45 Lê Lợi, Phường Tân Biên, TP. Biên Hòa, Đồng Nai",
+    "phuongThucTT": "COD",
+    "items": [
+      {
+        "maSP": "SP001",
+        "tenSP": "Đèn bàn LED chống cận Lumi Desk Pro",
+        "giaBan": 550000,
+        "soLuong": 1,
+        "thanhTien": 550000
+      },
+      {
+        "maSP": "SP025",
+        "tenSP": "Remote điều khiển đèn Lumi Remote IR",
+        "giaBan": 110000,
+        "soLuong": 1,
+        "thanhTien": 110000
+      }
+    ],
+    "tongTienHang": 660000,
+    "tienGiamGia": 0,
+    "phiShip": 30000,
+    "tongTien": 690000,
+    "ngayDat": "2026-10-12T09:15:00.000Z",
+    "trangThai": "ChoXacNhan",
+    "paymentId": "TT001",
+    "createdAt": "2026-10-12T09:15:00.000Z",
+    "updatedAt": "2026-10-12T09:15:00.000Z"
+  },
+  {
+    "id": "DH002",
+    "maKH": "KH003",
+    "diaChiGiao": "88 Võ Thị Sáu, Phường Thống Nhất, TP. Biên Hòa, Đồng Nai",
+    "phuongThucTT": "ChuyenKhoan",
+    "items": [
+      {
+        "maSP": "SP019",
+        "tenSP": "Đèn chùm pha lê Lumi Crystal 12 nhánh",
+        "giaBan": 1850000,
+        "soLuong": 1,
+        "thanhTien": 1850000
+      },
+      {
+        "maSP": "SP028",
+        "tenSP": "Adapter nguồn Lumi Adapter 12V",
+        "giaBan": 130000,
+        "soLuong": 1,
+        "thanhTien": 130000
+      }
+    ],
+    "tongTienHang": 1980000,
+    "tienGiamGia": 100000,
+    "phiShip": 0,
+    "tongTien": 1880000,
+    "voucherCode": "LUMIMAX100",
+    "ngayDat": "2026-10-14T11:30:00.000Z",
+    "trangThai": "DangGiao",
+    "paymentId": "TT002",
+    "createdAt": "2026-10-14T11:30:00.000Z",
+    "updatedAt": "2026-10-16T08:00:00.000Z"
+  },
+  {
+    "id": "DH003",
+    "maKH": "KH004",
+    "diaChiGiao": "21 Phạm Văn Đồng, Quận Thủ Đức, TP.HCM",
+    "phuongThucTT": "COD",
+    "items": [
+      {
+        "maSP": "SP007",
+        "tenSP": "Dây đèn LED RGB Lumi Strip 5m",
+        "giaBan": 220000,
+        "soLuong": 2,
+        "thanhTien": 440000
+      },
+      {
+        "maSP": "SP013",
+        "tenSP": "Đèn ngủ hình mây Lumi Cloud",
+        "giaBan": 190000,
+        "soLuong": 1,
+        "thanhTien": 190000
+      }
+    ],
+    "tongTienHang": 630000,
+    "tienGiamGia": 50000,
+    "phiShip": 25000,
+    "tongTien": 605000,
+    "voucherCode": "LUMIFIX50",
+    "ngayDat": "2026-10-15T14:20:00.000Z",
+    "trangThai": "DaGiao",
+    "paymentId": "TT003",
+    "createdAt": "2026-10-15T14:20:00.000Z",
+    "updatedAt": "2026-10-18T16:00:00.000Z"
+  },
+  {
+    "id": "DH004",
+    "maKH": "KH005",
+    "diaChiGiao": "9 Nguyễn Ái Quốc, TP. Biên Hòa, Đồng Nai",
+    "phuongThucTT": "COD",
+    "items": [
+      {
+        "maSP": "SP020",
+        "tenSP": "Đèn chùm hiện đại Lumi Modern Ring",
+        "giaBan": 1250000,
+        "soLuong": 1,
+        "thanhTien": 1250000
+      }
+    ],
+    "tongTienHang": 1250000,
+    "tienGiamGia": 0,
+    "phiShip": 40000,
+    "tongTien": 1290000,
+    "ngayDat": "2026-10-16T07:45:00.000Z",
+    "trangThai": "DaHuy",
+    "paymentId": "TT004",
+    "createdAt": "2026-10-16T07:45:00.000Z",
+    "updatedAt": "2026-10-16T10:00:00.000Z"
+  },
+  {
+    "id": "DH005",
+    "maKH": "KH002",
+    "diaChiGiao": "45 Lê Lợi, Phường Tân Biên, TP. Biên Hòa, Đồng Nai",
+    "phuongThucTT": "ChuyenKhoan",
+    "items": [
+      {
+        "maSP": "SP010",
+        "tenSP": "Đèn LED panel văn phòng Lumi Panel 48W",
+        "giaBan": 450000,
+        "soLuong": 1,
+        "thanhTien": 450000
+      },
+      {
+        "maSP": "SP016",
+        "tenSP": "Đèn ngủ hẹn giờ Lumi Night Timer",
+        "giaBan": 210000,
+        "soLuong": 2,
+        "thanhTien": 420000
+      }
+    ],
+    "tongTienHang": 870000,
+    "tienGiamGia": 0,
+    "phiShip": 30000,
+    "tongTien": 900000,
+    "ngayDat": "2026-10-18T19:10:00.000Z",
+    "trangThai": "DaGiao",
+    "paymentId": "TT005",
+    "createdAt": "2026-10-18T19:10:00.000Z",
+    "updatedAt": "2026-10-19T15:30:00.000Z"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "DM001",
+    "tenDanhMuc": "Đèn bàn",
+    "moTa": "Đèn bàn học tập và làm việc bảo vệ thị lực, chống cận thị",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM002",
+    "tenDanhMuc": "Đèn LED",
+    "moTa": "Đèn LED chiếu sáng, RGB trang trí và tiết kiệm điện",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM003",
+    "tenDanhMuc": "Đèn ngủ",
+    "moTa": "Đèn ngủ ánh sáng dịu, hẹn giờ và hỗ trợ giấc ngủ",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM004",
+    "tenDanhMuc": "Đèn chùm",
+    "moTa": "Đèn chùm trang trí nội thất cho phòng khách và phòng ăn",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM005",
+    "tenDanhMuc": "Phụ kiện",
+    "moTa": "Phụ kiện đèn: bóng đèn, chân đế, remote, adapter",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  }
+]

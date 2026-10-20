@@ -1,0 +1,62 @@
+[
+  {
+    "id": "KH001",
+    "hoTen": "Nguyễn Quản Trị",
+    "sdt": "0901111001",
+    "email": "admin@lumishop.vn",
+    "diaChi": "12 Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM",
+    "tenDangNhap": "admin",
+    "matKhau": "123",
+    "role": "admin",
+    "createdAt": "2026-01-10T08:00:00.000Z",
+    "updatedAt": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "id": "KH002",
+    "hoTen": "Trần Thị Mai",
+    "sdt": "0912345678",
+    "email": "user1@lumishop.vn",
+    "diaChi": "45 Lê Lợi, Phường Tân Biên, TP. Biên Hòa, Đồng Nai",
+    "tenDangNhap": "user1",
+    "matKhau": "123",
+    "role": "user",
+    "createdAt": "2026-02-01T08:00:00.000Z",
+    "updatedAt": "2026-02-01T08:00:00.000Z"
+  },
+  {
+    "id": "KH003",
+    "hoTen": "Lê Minh Khoa",
+    "sdt": "0987654321",
+    "email": "user2@lumishop.vn",
+    "diaChi": "88 Võ Thị Sáu, Phường Thống Nhất, TP. Biên Hòa, Đồng Nai",
+    "tenDangNhap": "user2",
+    "matKhau": "123",
+    "role": "user",
+    "createdAt": "2026-02-12T08:00:00.000Z",
+    "updatedAt": "2026-02-12T08:00:00.000Z"
+  },
+  {
+    "id": "KH004",
+    "hoTen": "Phạm Ngọc Hà",
+    "sdt": "0934567890",
+    "email": "user3@lumishop.vn",
+    "diaChi": "21 Phạm Văn Đồng, Quận Thủ Đức, TP.HCM",
+    "tenDangNhap": "user3",
+    "matKhau": "123",
+    "role": "user",
+    "createdAt": "2026-03-05T08:00:00.000Z",
+    "updatedAt": "2026-03-05T08:00:00.000Z"
+  },
+  {
+    "id": "KH005",
+    "hoTen": "Hoàng Đức Anh",
+    "sdt": "0978123456",
+    "email": "user4@lumishop.vn",
+    "diaChi": "9 Nguyễn Ái Quốc, TP. Biên Hòa, Đồng Nai",
+    "tenDangNhap": "user4",
+    "matKhau": "123",
+    "role": "user",
+    "createdAt": "2026-03-20T08:00:00.000Z",
+    "updatedAt": "2026-03-20T08:00:00.000Z"
+  }
+]

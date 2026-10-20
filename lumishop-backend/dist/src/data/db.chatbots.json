@@ -1,0 +1,47 @@
+[
+  {
+    "id": "CB001",
+    "maKH": "KH001",
+    "cauHoi": "Shop đang có những danh mục đèn nào?",
+    "cauTraLoi": "Dạ shop có 5 danh mục: Đèn bàn, Đèn LED, Đèn ngủ, Đèn chùm và Phụ kiện ạ.",
+    "timestamp": "2026-10-10T08:30:00.000Z",
+    "nguCanh": "TuVanKhachHang",
+    "trangThai": "DaPhanHoi"
+  },
+  {
+    "id": "CB002",
+    "maKH": "KH002",
+    "cauHoi": "Em muốn mua đèn bàn chống cận cho con học bài, có mẫu nào không?",
+    "cauTraLoi": "Dạ có ạ. Anh/chị có thể xem Đèn bàn LED chống cận Lumi Desk Pro (SP001) hoặc Đèn bàn học sinh Lumi Study Basic (SP005) ạ.",
+    "timestamp": "2026-10-12T08:50:00.000Z",
+    "nguCanh": "TuVanKhachHang",
+    "trangThai": "DaPhanHoi"
+  },
+  {
+    "id": "CB003",
+    "maKH": "KH003",
+    "cauHoi": "Đèn chùm pha lê còn hàng không, giá khoảng bao nhiêu?",
+    "cauTraLoi": "Dạ Đèn chùm pha lê Lumi Crystal 12 nhánh (SP019) đang còn hàng, giá 1.850.000đ ạ.",
+    "timestamp": "2026-10-14T10:05:00.000Z",
+    "nguCanh": "TuVanKhachHang",
+    "trangThai": "DaPhanHoi"
+  },
+  {
+    "id": "CB004",
+    "maKH": "KH004",
+    "cauHoi": "Shop có mã giảm giá cho dây LED RGB không?",
+    "cauTraLoi": "Dạ đơn từ 400.000đ có thể dùng mã LUMIFIX50 giảm ngay 50.000đ ạ.",
+    "timestamp": "2026-10-15T13:40:00.000Z",
+    "nguCanh": "TuVanKhachHang",
+    "trangThai": "DaPhanHoi"
+  },
+  {
+    "id": "CB005",
+    "maKH": "KH005",
+    "cauHoi": "Mình muốn hủy đơn đèn chùm hiện đại được không?",
+    "cauTraLoi": "Dạ được ạ. Đơn DH004 đã được ghi nhận hủy và hoàn lại tồn kho sản phẩm SP020.",
+    "timestamp": "2026-10-16T09:20:00.000Z",
+    "nguCanh": "TuVanKhachHang",
+    "trangThai": "DaPhanHoi"
+  }
+]

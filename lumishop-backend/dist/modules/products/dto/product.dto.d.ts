@@ -1,0 +1,10 @@
+export declare class ProductDto {
+    id: string;
+    tenSP: string;
+    moTa: string;
+    giaBan: number;
+    soLuongTon: number;
+    hinhAnh: string;
+    categoryId?: string;
+    trangThai: string;
+}

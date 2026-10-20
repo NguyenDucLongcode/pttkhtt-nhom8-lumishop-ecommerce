@@ -1,0 +1,42 @@
+[
+  {
+    "id": "TT001",
+    "maDH": "DH001",
+    "soTien": 690000,
+    "phuongThuc": "COD",
+    "thoiGian": "2026-10-12T09:15:00.000Z",
+    "trangThai": "ChoThanhToan"
+  },
+  {
+    "id": "TT002",
+    "maDH": "DH002",
+    "soTien": 1880000,
+    "phuongThuc": "ChuyenKhoan",
+    "thoiGian": "2026-10-14T11:30:00.000Z",
+    "trangThai": "DaThanhToan"
+  },
+  {
+    "id": "TT003",
+    "maDH": "DH003",
+    "soTien": 605000,
+    "phuongThuc": "COD",
+    "thoiGian": "2026-10-18T16:00:00.000Z",
+    "trangThai": "DaThanhToan"
+  },
+  {
+    "id": "TT004",
+    "maDH": "DH004",
+    "soTien": 1290000,
+    "phuongThuc": "COD",
+    "thoiGian": "2026-10-16T07:45:00.000Z",
+    "trangThai": "DaHuy"
+  },
+  {
+    "id": "TT005",
+    "maDH": "DH005",
+    "soTien": 900000,
+    "phuongThuc": "ChuyenKhoan",
+    "thoiGian": "2026-10-18T19:10:00.000Z",
+    "trangThai": "DaThanhToan"
+  }
+]
