@@ -23,6 +23,25 @@ export const ProductsPage: React.FC = () => {
     queryFn: () => categoriesApi.getAll(),
   })
 
+  // Fetch all products to count per category
+  const { data: allProductsData } = useQuery({
+    queryKey: ['products-all-count'],
+    queryFn: () => productsApi.getAll({ limit: 100 }),
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {}
+    if (allProductsData?.data) {
+      for (const p of allProductsData.data) {
+        if (p.categoryId) {
+          counts[p.categoryId] = (counts[p.categoryId] || 0) + 1
+        }
+      }
+    }
+    return counts
+  }, [allProductsData])
+
   // Fetch products
   const {
     data: productsData,
@@ -94,7 +113,7 @@ export const ProductsPage: React.FC = () => {
           <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight">Tất Cả Sản Phẩm</h1>
           <p className="text-xs text-neutral-500 mt-1">
             {productsData?.total !== undefined
-              ? `Hiển thị ${productsData.total} sản phẩm đèn và thiết bị chiếu sáng chính hãng`
+              ? `Hiển thị ${productsData.total} sản phẩm và thiết bị chính hãng đa dạng ngành hàng`
               : 'Đang tải dữ liệu từ máy chủ...'}
           </p>
         </div>
@@ -152,30 +171,52 @@ export const ProductsPage: React.FC = () => {
               <button
                 onClick={() => handleCategorySelect('')}
                 className={cn(
-                  'text-left text-xs px-3 py-2 rounded font-medium transition-colors cursor-pointer',
+                  'text-left text-xs px-3 py-2 rounded font-medium transition-colors cursor-pointer flex items-center justify-between',
                   !categoryId
                     ? 'bg-neutral-900 text-white font-semibold'
                     : 'text-neutral-600 hover:bg-neutral-100'
                 )}
               >
-                Tất cả danh mục
-              </button>
-
-              {categories?.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => handleCategorySelect(cat.id)}
+                <span>Tất cả danh mục</span>
+                <span
                   className={cn(
-                    'text-left text-xs px-3 py-2 rounded font-medium transition-colors cursor-pointer flex items-center justify-between',
-                    categoryId === cat.id
-                      ? 'bg-neutral-900 text-white font-semibold'
-                      : 'text-neutral-600 hover:bg-neutral-100'
+                    'text-[11px] font-semibold px-2 py-0.5 rounded-full',
+                    !categoryId
+                      ? 'bg-neutral-800 text-neutral-200'
+                      : 'bg-neutral-100 text-neutral-500'
                   )}
                 >
-                  <span>{cat.tenDanhMuc}</span>
-                  <span className="text-[10px] opacity-60 font-mono">{cat.id}</span>
-                </button>
-              ))}
+                  ({allProductsData?.total ?? 0})
+                </span>
+              </button>
+
+              {categories?.map((cat) => {
+                const count = categoryCounts[cat.id] ?? 0
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => handleCategorySelect(cat.id)}
+                    className={cn(
+                      'text-left text-xs px-3 py-2 rounded font-medium transition-colors cursor-pointer flex items-center justify-between',
+                      categoryId === cat.id
+                        ? 'bg-neutral-900 text-white font-semibold'
+                        : 'text-neutral-600 hover:bg-neutral-100'
+                    )}
+                  >
+                    <span>{cat.tenDanhMuc}</span>
+                    <span
+                      className={cn(
+                        'text-[11px] font-semibold px-2 py-0.5 rounded-full',
+                        categoryId === cat.id
+                          ? 'bg-neutral-800 text-neutral-200'
+                          : 'bg-neutral-100 text-neutral-500'
+                      )}
+                    >
+                      ({count})
+                    </span>
+                  </button>
+                )
+              })}
             </div>
           </div>
         </div>

@@ -28,9 +28,25 @@ let AiChatbotController = class AiChatbotController {
         }
         return this.aiChatbotService.getChatHistory(maKH);
     }
-    streamChat(message, req) {
+    streamChat(message, historyStr, req) {
         const maKH = req?.user?.userId || req?.user?.sub;
-        return this.aiChatbotService.streamChat(message, maKH);
+        let history = [];
+        if (historyStr) {
+            try {
+                const parsed = JSON.parse(historyStr);
+                if (Array.isArray(parsed)) {
+                    history = parsed
+                        .filter((item) => item &&
+                        (item.role === 'user' || item.role === 'assistant') &&
+                        typeof item.content === 'string' &&
+                        item.content.trim().length > 0)
+                        .slice(-6);
+                }
+            }
+            catch {
+            }
+        }
+        return this.aiChatbotService.streamChat(message, maKH, history);
     }
 };
 __decorate([
@@ -59,14 +75,20 @@ __decorate([
     Sse('stream'),
     ApiOperation({
         summary: 'Chatbot tư vấn LumiShop (SSE streaming)',
-        description: 'Hỗ trợ khách vãng lai (không lưu lịch sử) và người dùng đăng nhập (tự động lưu lịch sử theo tài khoản).',
+        description: 'Hỗ trợ bộ nhớ ngắn hạn (Conversation Memory), khách vãng lai (không lưu lịch sử) và người dùng đăng nhập (tự động lưu lịch sử theo tài khoản).',
     }),
     ApiQuery({
         name: 'message',
         required: true,
         type: String,
         description: 'Nội dung tin nhắn / câu hỏi của khách hàng',
-        example: 'Đèn bàn thông minh Lumi có những tính năng gì nổi bật?',
+        example: 'dùng để trang trí á bạn',
+    }),
+    ApiQuery({
+        name: 'history',
+        required: false,
+        type: String,
+        description: 'Lịch sử 4-6 tin nhắn gần nhất dạng JSON string [{ role: "user"|"assistant", content: "..." }]',
     }),
     ApiQuery({
         name: 'token',
@@ -79,9 +101,10 @@ __decorate([
         description: 'Phản hồi streaming SSE từ AI Chatbot (text/event-stream)',
     }),
     __param(0, Query('message')),
-    __param(1, Req()),
+    __param(1, Query('history')),
+    __param(2, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", Observable)
 ], AiChatbotController.prototype, "streamChat", null);
 AiChatbotController = __decorate([

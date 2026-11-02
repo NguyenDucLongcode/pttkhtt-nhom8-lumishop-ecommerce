@@ -62,3 +62,30 @@ button, a {
 ::-webkit-scrollbar-thumb:hover {
   background: #a3a3a3;
 }
+
+/* Chatbot Product Cards Horizontal Scroll */
+.product-cards-scroll {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 12px;
+  padding: 6px 2px 10px 2px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.product-cards-scroll::-webkit-scrollbar {
+  height: 5px;
+}
+.product-cards-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 9999px;
+}
+.product-cards-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.product-cards-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+

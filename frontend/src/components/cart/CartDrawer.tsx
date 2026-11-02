@@ -59,7 +59,7 @@ export const CartDrawer: React.FC = () => {
                   Giỏ hàng chưa có sản phẩm nào
                 </p>
                 <p className="text-xs text-slate-400 mt-1 max-w-xs">
-                  Hãy khám phá các mẫu đèn bàn chống cận và thiết bị chiếu sáng của LumiShop.
+                  Hãy khám phá các sản phẩm gia dụng, đồ dùng học tập và thiết bị thông minh của LumiShop.
                 </p>
                 <Button
                   variant="outline"

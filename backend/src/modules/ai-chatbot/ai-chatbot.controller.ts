@@ -60,8 +60,9 @@ export class AiChatbotController {
   }
 
   /**
-   * SSE endpoint — GET /chat/stream?message=...
+   * SSE endpoint — GET /chat/stream?message=...&history=...
    * Endpoint duy nhất của chatbot tư vấn LumiShop sử dụng Server-Sent Events (SSE) streaming.
+   * Hỗ trợ bộ nhớ ngắn hạn (Conversation Memory) qua tham số history.
    * Cho phép cả khách vãng lai và người dùng đã đăng nhập (hỗ trợ JWT qua Bearer Header hoặc query param token).
    */
   @Public()
@@ -69,14 +70,21 @@ export class AiChatbotController {
   @ApiOperation({
     summary: 'Chatbot tư vấn LumiShop (SSE streaming)',
     description:
-      'Hỗ trợ khách vãng lai (không lưu lịch sử) và người dùng đăng nhập (tự động lưu lịch sử theo tài khoản).',
+      'Hỗ trợ bộ nhớ ngắn hạn (Conversation Memory), khách vãng lai (không lưu lịch sử) và người dùng đăng nhập (tự động lưu lịch sử theo tài khoản).',
   })
   @ApiQuery({
     name: 'message',
     required: true,
     type: String,
     description: 'Nội dung tin nhắn / câu hỏi của khách hàng',
-    example: 'Đèn bàn thông minh Lumi có những tính năng gì nổi bật?',
+    example: 'dùng để trang trí á bạn',
+  })
+  @ApiQuery({
+    name: 'history',
+    required: false,
+    type: String,
+    description:
+      'Lịch sử 4-6 tin nhắn gần nhất dạng JSON string [{ role: "user"|"assistant", content: "..." }]',
   })
   @ApiQuery({
     name: 'token',
@@ -91,9 +99,31 @@ export class AiChatbotController {
   })
   streamChat(
     @Query('message') message: string,
+    @Query('history') historyStr: string | undefined,
     @Req() req: any,
   ): Observable<MessageEvent> {
     const maKH = req?.user?.userId || req?.user?.sub;
-    return this.aiChatbotService.streamChat(message, maKH);
+
+    let history: { role: string; content: string }[] = [];
+    if (historyStr) {
+      try {
+        const parsed = JSON.parse(historyStr);
+        if (Array.isArray(parsed)) {
+          history = parsed
+            .filter(
+              (item) =>
+                item &&
+                (item.role === 'user' || item.role === 'assistant') &&
+                typeof item.content === 'string' &&
+                item.content.trim().length > 0,
+            )
+            .slice(-6);
+        }
+      } catch {
+        // Bỏ qua nếu định dạng JSON không hợp lệ
+      }
+    }
+
+    return this.aiChatbotService.streamChat(message, maKH, history);
   }
 }

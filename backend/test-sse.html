@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test SSE - LumiShop AI Chatbot (JWT History & RAG)</title>
+  <title>Test SSE - LumiShop AI Chatbot (In-Context & Horizontal Product Cards)</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -15,7 +15,7 @@
       color: #333;
     }
     .container {
-      max-width: 720px;
+      max-width: 760px;
       width: 100%;
       background: #fff;
       border-radius: 12px;
@@ -161,19 +161,42 @@
       text-align: right;
     }
 
-    /* Product Cards */
-    .product-cards-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 12px;
-      margin-bottom: 12px;
+    /* Product Cards - Thanh cuộn ngang theo yêu cầu PHẦN 5 */
+    .product-section-wrapper {
+      margin-bottom: 14px;
       animation: fadeIn 0.3s ease-in;
     }
+    .product-cards-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      padding: 6px 2px 10px 2px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    .product-cards-container::-webkit-scrollbar {
+      height: 6px;
+    }
+    .product-cards-container::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .product-cards-container::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .product-cards-container::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .product-card {
+      min-width: 195px;
+      max-width: 215px;
+      flex-shrink: 0;
       background: #fff;
       border: 1px solid #e2e8f0;
       border-radius: 10px;
@@ -228,6 +251,33 @@
       transition: background 0.2s;
     }
     .product-card .card-btn:hover { background: #38a169; }
+
+    /* Nút Xem tất cả sản phẩm */
+    .view-all-container {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+    }
+    .view-all-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #eef2ff;
+      color: #4f46e5;
+      border: 1px solid #c7d2fe;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .view-all-btn:hover {
+      background: #4f46e5;
+      color: #fff;
+      border-color: #4f46e5;
+      transform: translateX(2px);
+    }
 
     /* Input Area */
     .input-area {
@@ -295,7 +345,7 @@
 <div class="container">
   <div class="header">
     <h1>🤖 LumiShop AI Sales Agent</h1>
-    <p>Tư vấn chủ động, RAG Product Cards & Quản lý lịch sử Chat theo tài khoản JWT</p>
+    <p>In-Context Learning, Thanh trượt ngang sản phẩm & Nút xem tất cả sản phẩm</p>
   </div>
 
   <!-- Thanh trạng thái đăng nhập & thông tin người dùng -->
@@ -304,7 +354,7 @@
   </div>
 
   <div class="chat-area" id="chatArea">
-    <div class="message bot">Dạ em chào anh/chị! Em là trợ lý ảo của LumiShop. Anh/chị đang tìm sản phẩm gì để em tư vấn ạ?</div>
+    <div class="message bot">Dạ em chào anh/chị! Em là nhân viên tư vấn LumiShop. Em có thể hỗ trợ anh/chị tìm mẫu đèn chiếu sáng hay phụ kiện nào hôm nay ạ?</div>
   </div>
 
   <div class="input-area">
@@ -321,7 +371,7 @@
 <div id="toast" class="toast"></div>
 
 <script>
-  const API_BASE = 'http://localhost:3000';
+  const API_BASE = 'http://localhost:8080';
   const TOKEN_KEY = 'lumishop_access_token';
   const USER_KEY = 'lumishop_user';
 
@@ -332,8 +382,9 @@
   const authBar = document.getElementById('authBar');
 
   let currentEventSource = null;
+  // Lưu lịch sử các lượt tin nhắn trong phiên chat để làm Conversation Memory
+  let conversationMessages = [];
 
-  // Lấy token & user từ localStorage
   function getToken() {
     return localStorage.getItem(TOKEN_KEY);
   }
@@ -444,11 +495,11 @@
   function logout() {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    conversationMessages = [];
     renderAuthBar();
 
-    // Reset giao diện chat về lời chào mặc định
     chatArea.innerHTML = `
-      <div class="message bot">Dạ em chào anh/chị! Em là trợ lý ảo của LumiShop. Anh/chị đang tìm sản phẩm gì để em tư vấn ạ?</div>
+      <div class="message bot">Dạ em chào anh/chị! Em là nhân viên tư vấn LumiShop. Em có thể hỗ trợ anh/chị tìm mẫu đèn chiếu sáng hay phụ kiện nào hôm nay ạ?</div>
     `;
     showToast('👋 Đã đăng xuất. Bạn đang chat với tư cách khách vãng lai.');
   }
@@ -475,14 +526,12 @@
     return div;
   }
 
-  // Tải lịch sử chat từ API GET /chat/history (chỉ khi đã đăng nhập)
   async function loadChatHistory() {
     const token = getToken();
 
-    // Nếu là khách vãng lai, hiển thị lời chào mặc định và không gọi API /chat/history
     if (!token) {
       chatArea.innerHTML = `
-        <div class="message bot">Dạ em chào anh/chị! Em là trợ lý ảo của LumiShop. Anh/chị đang tìm sản phẩm gì để em tư vấn ạ?</div>
+        <div class="message bot">Dạ em chào anh/chị! Em là nhân viên tư vấn LumiShop. Em có thể hỗ trợ anh/chị tìm mẫu đèn chiếu sáng hay phụ kiện nào hôm nay ạ?</div>
       `;
       return;
     }
@@ -509,6 +558,7 @@
       const history = Array.isArray(result) ? result : (result.data || []);
 
       chatArea.innerHTML = '';
+      conversationMessages = [];
 
       if (history.length > 0) {
         const divider = document.createElement('div');
@@ -519,14 +569,16 @@
         history.forEach((item) => {
           if (item.cauHoi) {
             addMessage(item.cauHoi, 'user', item.timestamp);
+            conversationMessages.push({ role: 'user', content: item.cauHoi });
           }
           if (item.cauTraLoi) {
             addMessage(item.cauTraLoi, 'bot', item.timestamp);
+            conversationMessages.push({ role: 'assistant', content: item.cauTraLoi });
           }
         });
       } else {
         chatArea.innerHTML = `
-          <div class="message bot">Dạ em chào anh/chị! Em là trợ lý ảo của LumiShop. Tài khoản của anh/chị chưa có lịch sử tư vấn nào. Em có thể hỗ trợ anh/chị tìm sản phẩm gì ạ?</div>
+          <div class="message bot">Dạ em chào anh/chị! Em là nhân viên tư vấn LumiShop. Tài khoản của anh/chị chưa có lịch sử tư vấn nào. Em có thể hỗ trợ anh/chị tìm sản phẩm gì ạ?</div>
         `;
       }
 
@@ -536,9 +588,14 @@
     }
   }
 
-  function renderProductCards(products) {
+  // PHẦN 5: Render Product Cards dạng thanh trượt ngang + Nút "Xem tất cả {totalFound} sản phẩm >"
+  function renderProductCards(products, searchKeyword = '', totalFound = 0) {
     if (!products || !products.length) return;
 
+    const wrapper = document.createElement('div');
+    wrapper.className = 'product-section-wrapper';
+
+    // Khung chứa dạng thanh trượt ngang (display: flex; overflow-x: auto;)
     const container = document.createElement('div');
     container.className = 'product-cards-container';
 
@@ -564,7 +621,7 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'card-btn';
-      btn.innerHTML = '🛒 Thêm vào giỏ hàng';
+      btn.innerHTML = '🛒 Thêm vào giỏ';
       btn.onclick = () => addToCart(prod.tenSP);
 
       card.appendChild(img);
@@ -574,7 +631,29 @@
       container.appendChild(card);
     });
 
-    chatArea.appendChild(container);
+    wrapper.appendChild(container);
+
+    // PHẦN 5: Nếu totalFound > 3, hiển thị thêm nút "Xem tất cả {totalFound} sản phẩm >"
+    if (totalFound > 3) {
+      const viewAllContainer = document.createElement('div');
+      viewAllContainer.className = 'view-all-container';
+
+      const viewAllBtn = document.createElement('button');
+      viewAllBtn.type = 'button';
+      viewAllBtn.className = 'view-all-btn';
+      viewAllBtn.innerHTML = `Xem tất cả ${totalFound} sản phẩm &gt;`;
+
+      // Gắn sự kiện click: Chuyển hướng trình duyệt sang trang danh mục sản phẩm
+      viewAllBtn.onclick = () => {
+        const queryParam = searchKeyword ? encodeURIComponent(searchKeyword) : '';
+        window.location.href = '/products?search=' + queryParam;
+      };
+
+      viewAllContainer.appendChild(viewAllBtn);
+      wrapper.appendChild(viewAllContainer);
+    }
+
+    chatArea.appendChild(wrapper);
     chatArea.scrollTop = chatArea.scrollHeight;
   }
 
@@ -582,30 +661,35 @@
     const message = messageInput.value.trim();
     if (!message) return;
 
-    // Đóng kết nối cũ nếu còn đang mở
     if (currentEventSource) {
       currentEventSource.close();
       currentEventSource = null;
     }
 
-    // 1. Hiển thị tin nhắn người dùng
+    // 1. Thu thập 4-6 tin nhắn gần nhất làm bộ nhớ ngắn hạn (Conversation Memory)
+    const recentHistory = conversationMessages.slice(-6);
+
+    // 2. Hiển thị tin nhắn người dùng và lưu vào conversationMessages
     addMessage(message, 'user');
+    conversationMessages.push({ role: 'user', content: message });
     messageInput.value = '';
     sendBtn.disabled = true;
 
-    // 2. Tạo bubble bot hiển thị typing indicator
+    // 3. Tạo bubble bot hiển thị typing indicator
     const botBubble = addMessage('', 'bot');
     const typingSpan = document.createElement('span');
     typingSpan.className = 'typing-indicator';
-    typingSpan.textContent = '⏳ Em đang tìm sản phẩm và trả lời anh/chị...';
+    typingSpan.textContent = '⏳ Em đang tìm hiểu và chuẩn bị tư vấn cho anh/chị...';
     botBubble.appendChild(typingSpan);
 
-    // 3. Chuẩn bị kết nối SSE
+    // 4. Chuẩn bị kết nối SSE kèm tin nhắn & lịch sử (dạng JSON string)
     const encodedMessage = encodeURIComponent(message);
     const token = getToken();
 
-    // Hỗ trợ truyền JWT token qua query param 'token' để native EventSource trình duyệt gửi xác thực
     let url = `${API_BASE}/chat/stream?message=${encodedMessage}`;
+    if (recentHistory.length > 0) {
+      url += `&history=${encodeURIComponent(JSON.stringify(recentHistory))}`;
+    }
     if (token) {
       url += `&token=${encodeURIComponent(token)}`;
     }
@@ -630,23 +714,31 @@
           return;
         }
 
-        // TÍN HIỆU HOÀN TẤT [DONE]: Server đã phát xong toàn bộ dữ liệu
+        // TÍN HIỆU HOÀN TẤT [DONE]
         if (parsed.type === 'done' || parsed.content === '[DONE]') {
           eventSource.close();
           currentEventSource = null;
           sendBtn.disabled = false;
+          // Lưu phản hồi của bot vào bộ nhớ ngắn hạn
+          if (fullText) {
+            conversationMessages.push({ role: 'assistant', content: fullText });
+          }
           return;
         }
 
-        // LUỒNG 1: Trả thẻ sản phẩm (Product Cards)
+        // PHẦN 5: Xử lý sự kiện type: 'products'
         if (parsed.type === 'products' && Array.isArray(parsed.content)) {
           if (!cardsRendered) {
-            renderProductCards(parsed.content);
+            renderProductCards(
+              parsed.content,
+              parsed.searchKeyword || '',
+              parsed.totalFound !== undefined ? parsed.totalFound : parsed.content.length,
+            );
             cardsRendered = true;
           }
         }
 
-        // LUỒNG 2: Trả text của AI
+        // LUỒNG 2: Trả text của AI (đã được lọc sạch mã [PRODUCT:...])
         if (parsed.type === 'text' || parsed.text) {
           const textChunk = parsed.content !== undefined ? parsed.content : parsed.text;
           if (typingSpan.parentNode) {
@@ -669,7 +761,7 @@
 
       if (!fullText && !cardsRendered) {
         botBubble.className = 'message error';
-        botBubble.textContent = '❌ Không thể kết nối đến server. Vui lòng kiểm tra NestJS (port 3000) và Ollama.';
+        botBubble.textContent = '❌ Không thể kết nối đến server. Vui lòng kiểm tra NestJS (port 8080) và Ollama.';
       }
     };
   }

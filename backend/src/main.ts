@@ -43,6 +43,7 @@ async function bootstrap() {
     .addTag('Customers', 'Quản lý khách hàng LumiShop')
     .addTag('Vouchers', 'Quản lý mã giảm giá (Vouchers) LumiShop')
     .addTag('Orders', 'Quản lý đơn hàng (Orders) và Checkout')
+    .addTag('Carts', 'Quản lý giỏ hàng trực tuyến người dùng')
     .addTag('Chatbot', 'Tư vấn thông minh qua AI Chatbot (Ollama qwen3:4b)')
     .build();
 

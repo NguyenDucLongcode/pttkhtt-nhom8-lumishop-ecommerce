@@ -10,6 +10,6 @@ export declare class AiChatbotController {
     private readonly aiChatbotService;
     constructor(aiChatbotService: AiChatbotService);
     getChatHistory(req: any): Promise<ChatbotEntry[]>;
-    streamChat(message: string, req: any): Observable<MessageEvent>;
+    streamChat(message: string, historyStr: string | undefined, req: any): Observable<MessageEvent>;
 }
 export {};

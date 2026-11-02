@@ -74,18 +74,22 @@ export const ProductDetailPage: React.FC = () => {
 
   const isOutOfStock = product.soLuongTon <= 0 || product.trangThai === 'NgungBan'
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!isOutOfStock) {
-      addToCart(product, quantity)
-      setAddedToast(true)
-      setTimeout(() => setAddedToast(false), 2500)
+      const ok = await addToCart(product, quantity)
+      if (ok) {
+        setAddedToast(true)
+        setTimeout(() => setAddedToast(false), 2500)
+      }
     }
   }
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!isOutOfStock) {
-      addToCart(product, quantity)
-      navigate('/checkout')
+      const ok = await addToCart(product, quantity)
+      if (ok) {
+        navigate('/checkout')
+      }
     }
   }
 
@@ -253,7 +257,7 @@ export const ProductDetailPage: React.FC = () => {
               Sản Phẩm Cùng Danh Mục Gợi Ý
             </h2>
             <p className="text-xs text-neutral-500 mt-0.5">
-              Các mẫu đèn tương tự cùng loại bạn có thể quan tâm
+              Các sản phẩm tương tự cùng danh mục bạn có thể quan tâm
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">

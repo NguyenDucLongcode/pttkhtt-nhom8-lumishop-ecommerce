@@ -62,7 +62,7 @@ export const OrderHistoryPage: React.FC = () => {
               Bạn chưa có đơn hàng nào
             </p>
             <p className="text-xs text-neutral-500 mt-0.5">
-              Hãy khám phá các thiết bị đèn học chống cận thị cao cấp của LumiShop.
+              Hãy khám phá các thiết bị thông minh, đồ gia dụng và phụ kiện tiện ích của LumiShop.
             </p>
           </div>
           <Link

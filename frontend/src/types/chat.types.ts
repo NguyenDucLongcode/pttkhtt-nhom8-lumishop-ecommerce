@@ -24,5 +24,7 @@ export interface ChatMessage {
   timestamp?: string
   products?: ProductCard[]
   productCards?: ProductCard[]
+  searchKeyword?: string
+  totalFound?: number
   isError?: boolean
 }

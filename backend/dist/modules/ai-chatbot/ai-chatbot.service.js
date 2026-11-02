@@ -19,56 +19,94 @@ let AiChatbotService = AiChatbotService_1 = class AiChatbotService {
     constructor(dbService) {
         this.dbService = dbService;
     }
-    findMatchingProducts(message, products) {
-        if (!products || products.length === 0)
-            return [];
-        const lowerMessage = message.toLowerCase().trim();
+    extractSearchKeyword(message, suggestedProducts, history) {
+        const lower = message.toLowerCase();
+        const commonKeywords = [
+            'đèn bàn',
+            'đèn led',
+            'đèn ngủ',
+            'đèn chùm',
+            'phụ kiện',
+            'bóng đèn',
+            'công tắc',
+            'chống cận',
+            'led rgb',
+            'thông minh',
+            'cảm ứng',
+            'pha lê',
+        ];
+        for (const kw of commonKeywords) {
+            if (lower.includes(kw)) {
+                return kw;
+            }
+        }
+        if (history && history.length > 0) {
+            const recentUserMessages = history
+                .filter((h) => h.role === 'user')
+                .map((h) => (h.content || '').toLowerCase())
+                .reverse();
+            for (const prevMsg of recentUserMessages) {
+                for (const kw of commonKeywords) {
+                    if (prevMsg.includes(kw)) {
+                        return kw;
+                    }
+                }
+            }
+        }
+        if (suggestedProducts.length > 0) {
+            const first = suggestedProducts[0];
+            const firstTen = (first.tenSP || '').toLowerCase();
+            for (const kw of commonKeywords) {
+                if (firstTen.includes(kw)) {
+                    return kw;
+                }
+            }
+            if (first.categoryId) {
+                const catMap = {
+                    DM001: 'đèn bàn',
+                    DM002: 'đèn led',
+                    DM003: 'đèn ngủ',
+                    DM004: 'đèn chùm',
+                    DM005: 'phụ kiện',
+                };
+                if (catMap[first.categoryId]) {
+                    return catMap[first.categoryId];
+                }
+            }
+        }
         const stopWords = new Set([
-            'la', 'va', 'co', 'khong', 'gi', 'nao', 'the', 'sao', 'muon', 'can',
-            'shop', 'em', 'anh', 'chi', 'toi', 'minh', 'ban', 'cho', 'voi', 'duoc',
-            'nhu', 'o', 'tai', 'a', 'da', 'ha', 'nhe', 'nhi', 'day', 'day', 'xin',
+            'shop', 'có', 'không', 'em', 'anh', 'chi', 'chị', 'tôi', 'toi', 'minh', 'mình',
+            'bạn', 'ban', 'cho', 'với', 'voi', 'được', 'duoc', 'xin', 'chào', 'chao', 'hello',
+            'hi', 'tư', 'vấn', 'tu', 'van', 'hỏi', 'hoi', 'muốn', 'muon', 'cần', 'can',
+            'tìm', 'tim', 'mua', 'xem', 'bán', 'ban', 'mẫu', 'mau', 'loại', 'loai', 'nào',
+            'nao', 'gì', 'gi', 'thế', 'the', 'giá', 'gia', 'bao', 'nhiêu', 'nhieu', 'ạ', 'a',
+            'ơi', 'oi', 'nhé', 'nhe', 'này', 'nay', 'ở', 'đâu', 'dùng', 'để', 'á',
         ]);
-        const rawTokens = lowerMessage
+        const words = lower
             .replace(/[^\p{L}\p{N}\s]/gu, ' ')
             .split(/\s+/)
-            .map((t) => t.trim())
-            .filter((t) => t.length >= 2 && !stopWords.has(t));
-        if (rawTokens.length === 0) {
-            return [];
+            .filter((w) => w.length >= 2 && !stopWords.has(w));
+        if (words.length > 0) {
+            return words.slice(0, 3).join(' ');
         }
-        const scored = products
-            .map((product) => {
-            const tenLower = (product.tenSP || '').toLowerCase();
-            const moTaLower = (product.moTa || '').toLowerCase();
-            const idLower = (product.id || '').toLowerCase();
-            let score = 0;
-            for (const token of rawTokens) {
-                if (idLower === token) {
-                    score += 20;
-                }
-                if (tenLower.includes(token)) {
-                    score += 5;
-                }
-                if (moTaLower.includes(token)) {
-                    score += 2;
-                }
-            }
-            if (rawTokens.length >= 2) {
-                const phrase = rawTokens.join(' ');
-                if (tenLower.includes(phrase))
-                    score += 15;
-                if (moTaLower.includes(phrase))
-                    score += 8;
-            }
-            return { product, score };
-        })
-            .filter((item) => item.score > 0)
-            .sort((a, b) => b.score - a.score);
-        return scored.slice(0, 3).map((item) => item.product);
+        return 'đèn';
     }
-    streamChat(message, maKH) {
+    countTotalProducts(keyword, allProducts) {
+        if (!keyword || !allProducts || allProducts.length === 0)
+            return 0;
+        const kw = keyword.toLowerCase().trim();
+        const matched = allProducts.filter((p) => {
+            const ten = (p.tenSP || '').toLowerCase();
+            const moTa = (p.moTa || '').toLowerCase();
+            return ten.includes(kw) || moTa.includes(kw);
+        });
+        return matched.length;
+    }
+    streamChat(message, maKH, history) {
         return new Observable((subscriber) => {
             const chunks = [];
+            const foundProductIds = new Set();
+            let productsEventSent = false;
             const run = async () => {
                 try {
                     let allProducts = [];
@@ -78,59 +116,60 @@ let AiChatbotService = AiChatbotService_1 = class AiChatbotService {
                     catch (err) {
                         this.logger.warn('Không thể đọc file db.products.json:', err);
                     }
-                    const matchedProducts = this.findMatchingProducts(message, allProducts);
-                    if (matchedProducts.length > 0) {
-                        const productCards = matchedProducts.map((p) => ({
-                            id: p.id,
-                            tenSP: p.tenSP,
-                            giaBan: p.giaBan,
-                            hinhAnh: p.hinhAnh || '',
-                        }));
-                        subscriber.next({
-                            data: JSON.stringify({
-                                type: 'products',
-                                content: productCards,
-                            }),
-                        });
-                    }
-                    let ragContext = '';
-                    if (matchedProducts.length > 0) {
-                        ragContext =
-                            '\nDưới đây là một số sản phẩm thực tế của shop:\n' +
-                                matchedProducts
-                                    .map((p) => `- Tên: ${p.tenSP}, Giá: ${Number(p.giaBan)?.toLocaleString('vi-VN')}đ, Tồn kho: ${p.soLuongTon}`)
-                                    .join('\n');
-                    }
-                    const systemPrompt = `Bạn là một nhân viên bán hàng xuất sắc của LumiShop. Bạn có nhiệm vụ tư vấn, thấu hiểu nhu cầu của khách hàng và chốt đơn.
+                    const productContext = allProducts
+                        .map((p) => `- [${p.id}] ${p.tenSP} - ${Number(p.giaBan || 0).toLocaleString('vi-VN')}đ - Tồn kho: ${p.soLuongTon}`)
+                        .join('\n');
+                    const systemPrompt = `Bạn là nhân viên tư vấn bán hàng xuất sắc của LumiShop. Nhiệm vụ của bạn là tư vấn tận tình, thấu hiểu nhu cầu của khách hàng và chốt đơn dựa trên danh sách sản phẩm thực tế của cửa hàng.
 
-Tính cách (Tone):
-- Thân thiện, nhiệt tình, luôn xưng "em" và gọi khách là "anh/chị".
-- Trả lời ngắn gọn, súc tích, không lan man.
+Tính cách & văn phong (Tone):
+- Thân thiện, niềm nở, lịch sự, luôn xưng "em" và gọi khách là "anh/chị".
+- Trả lời ngắn gọn, tự nhiên, súc tích, đi thẳng vào trọng tâm, không lan man.
 
-Quy tắc tư vấn (Rules):
-1. Không bao giờ chốt đơn ngay lập tức khi khách hàng hỏi chung chung (VD: "Shop có đèn bàn không?").
-2. Phải đặt câu hỏi ngược lại để khai thác nhu cầu. Ví dụ: Nếu khách hỏi mua đèn bàn, hãy hỏi: "Dạ anh/chị muốn mua đèn cho học sinh chống cận hay đèn trang trí ạ? Ngân sách dự kiến của anh/chị khoảng bao nhiêu?"
-3. Chỉ khi khách đã trả lời rõ nhu cầu, hãy đưa ra 1-2 gợi ý sản phẩm phù hợp kèm theo một câu thúc giục mua hàng tinh tế (VD: "Mẫu này đang rất hot, em thấy còn đúng 2 chiếc, anh/chị có muốn em chốt đơn luôn không ạ?").
-4. Khi khách hàng có ý định mua, hướng dẫn họ: 'Anh/chị có thể bấm nút "Thêm vào giỏ hàng" ở ngay bên cạnh sản phẩm ạ.'${ragContext ? `\n\n${ragContext}` : ''}`;
+Danh sách sản phẩm thực tế tại cửa hàng LumiShop:
+${productContext}
+
+QUY TẮC TƯ VẤN VÀ GỢI Ý SẢN PHẨM:
+1. Bạn CHỈ được tư vấn các sản phẩm có trong danh sách trên của shop.
+2. GHI NHỚ NGỮ CẢNH HỘI THOẠI (Conversation Memory):
+- Bạn đang trò chuyện liên tục với khách. Hãy LUÔN LUÔN ghi nhớ các câu hỏi và câu trả lời trước đó trong lịch sử trò chuyện.
+- Nếu khách hàng bổ sung chi tiết hoặc làm rõ nhu cầu ở câu sau (Ví dụ: Câu trước: "Tư vấn đèn bàn", Câu sau: "dùng để trang trí á bạn" hoặc "cho bé học lớp 1"), bạn PHẢI hiểu khách hàng vẫn đang tìm kiếm loại sản phẩm ở câu trước (ở đây là "đèn bàn dùng để trang trí"), TUYỆT ĐỐI KHÔNG tự động chuyển sang các danh mục không liên quan khác như cây cảnh, khung ảnh, đồ gia dụng.
+- Dựa trên nhu cầu tích hợp đó, hãy gợi ý 1-3 mẫu đèn bàn phù hợp (Ví dụ: Đèn bàn gỗ vintage Lumi Wood [PRODUCT:SP006] hoặc Đèn bàn thông minh [PRODUCT:SP002]).
+3. QUY TẮC GỢI Ý: Khi tư vấn hoặc giới thiệu sản phẩm cho khách, nếu bạn muốn gợi ý hiển thị sản phẩm cụ thể, hãy chèn mã [PRODUCT:ID] vào cuối câu trả lời (Ví dụ: [PRODUCT:SP006] hoặc [PRODUCT:SP001] [PRODUCT:SP002]).
+- TUYỆT ĐỐI chỉ gợi ý TỐI ĐA 3 sản phẩm phù hợp nhất trong một câu trả lời (tối đa 3 mã [PRODUCT:ID]).
+- Nếu có nhiều hơn 3 sản phẩm phù hợp, chỉ chọn 1-3 sản phẩm tiêu biểu nhất để chèn mã [PRODUCT:ID], các sản phẩm còn lại hãy tư vấn ngắn gọn bằng lời và khuyên khách bấm nút xem thêm.
+4. QUY TẮC TỪ CHỐI: Nếu khách hỏi món mà shop không kinh doanh (ví dụ: bút, thước, sách, quần áo, thực phẩm, thiết bị không có trong danh sách...), hãy trả lời khéo léo và lịch sự rằng shop hiện không bán mặt hàng này, đồng thời có thể giới thiệu các dòng đèn chiếu sáng hoặc phụ kiện thông minh shop đang có. TUYỆT ĐỐI KHÔNG ĐƯỢC chèn bất kỳ mã [PRODUCT:...] nào khi từ chối hoặc khi shop không có sản phẩm.
+5. Với các câu chào hỏi xã giao hoặc câu hỏi chung chung chưa rõ nhu cầu, hãy chào hỏi niềm nở và hỏi thăm nhu cầu của khách, không tự ý chèn mã [PRODUCT:ID].`;
+                    const ollamaMessages = [
+                        {
+                            role: 'system',
+                            content: systemPrompt,
+                        },
+                    ];
+                    if (history && history.length > 0) {
+                        for (const h of history) {
+                            const role = h.role === 'assistant' ? 'assistant' : 'user';
+                            if (h.content && typeof h.content === 'string') {
+                                ollamaMessages.push({
+                                    role,
+                                    content: h.content,
+                                });
+                            }
+                        }
+                    }
+                    ollamaMessages.push({
+                        role: 'user',
+                        content: message,
+                    });
                     const response = await fetch(this.ollamaUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             model: this.modelName,
-                            messages: [
-                                {
-                                    role: 'system',
-                                    content: systemPrompt,
-                                },
-                                {
-                                    role: 'user',
-                                    content: message,
-                                },
-                            ],
+                            messages: ollamaMessages,
                             think: false,
                             stream: true,
                             options: {
-                                num_predict: 256,
+                                num_predict: 350,
                             },
                         }),
                     });
@@ -143,6 +182,84 @@ Quy tắc tư vấn (Rules):
                     }
                     const decoder = new TextDecoder('utf-8');
                     let buffer = '';
+                    let pendingStreamText = '';
+                    const productTagRegex = /\[PRODUCT:([a-zA-Z0-9_-]+)\]/g;
+                    const emitCleanText = (flushAll = false) => {
+                        let match;
+                        while ((match = productTagRegex.exec(pendingStreamText)) !== null) {
+                            const pid = match[1].toUpperCase();
+                            foundProductIds.add(pid);
+                        }
+                        pendingStreamText = pendingStreamText.replace(productTagRegex, '');
+                        if (flushAll) {
+                            if (pendingStreamText) {
+                                chunks.push(pendingStreamText);
+                                subscriber.next({
+                                    data: JSON.stringify({
+                                        type: 'text',
+                                        content: pendingStreamText,
+                                    }),
+                                });
+                                pendingStreamText = '';
+                            }
+                            return;
+                        }
+                        const lastOpenBracket = pendingStreamText.lastIndexOf('[');
+                        if (lastOpenBracket !== -1 &&
+                            pendingStreamText.indexOf(']', lastOpenBracket) === -1) {
+                            if (pendingStreamText.length - lastOpenBracket < 35) {
+                                const safePart = pendingStreamText.slice(0, lastOpenBracket);
+                                pendingStreamText = pendingStreamText.slice(lastOpenBracket);
+                                if (safePart) {
+                                    chunks.push(safePart);
+                                    subscriber.next({
+                                        data: JSON.stringify({
+                                            type: 'text',
+                                            content: safePart,
+                                        }),
+                                    });
+                                }
+                                return;
+                            }
+                        }
+                        if (pendingStreamText) {
+                            chunks.push(pendingStreamText);
+                            subscriber.next({
+                                data: JSON.stringify({
+                                    type: 'text',
+                                    content: pendingStreamText,
+                                }),
+                            });
+                            pendingStreamText = '';
+                        }
+                    };
+                    const sendProductsEvent = () => {
+                        if (productsEventSent || foundProductIds.size === 0)
+                            return;
+                        const matchedProducts = Array.from(foundProductIds)
+                            .slice(0, 3)
+                            .map((id) => allProducts.find((p) => p.id.toUpperCase() === id))
+                            .filter((p) => !!p);
+                        if (matchedProducts.length > 0) {
+                            const searchKeyword = this.extractSearchKeyword(message, matchedProducts, history);
+                            const totalFound = Math.max(this.countTotalProducts(searchKeyword, allProducts), matchedProducts.length);
+                            const productCards = matchedProducts.map((p) => ({
+                                id: p.id,
+                                tenSP: p.tenSP,
+                                giaBan: p.giaBan,
+                                hinhAnh: p.hinhAnh || '',
+                            }));
+                            subscriber.next({
+                                data: JSON.stringify({
+                                    type: 'products',
+                                    content: productCards,
+                                    searchKeyword,
+                                    totalFound,
+                                }),
+                            });
+                            productsEventSent = true;
+                        }
+                    };
                     while (true) {
                         const { done, value } = await reader.read();
                         if (done)
@@ -162,13 +279,11 @@ Quy tắc tư vấn (Rules):
                                 }
                                 const content = parsed.message?.content;
                                 if (content && typeof content === 'string' && content.length > 0) {
-                                    chunks.push(content);
-                                    subscriber.next({
-                                        data: JSON.stringify({
-                                            type: 'text',
-                                            content,
-                                        }),
-                                    });
+                                    pendingStreamText += content;
+                                    emitCleanText(false);
+                                    if (foundProductIds.size > 0 && !productsEventSent) {
+                                        sendProductsEvent();
+                                    }
                                 }
                                 if (parsed.done === true) {
                                     break;
@@ -183,21 +298,16 @@ Quy tắc tư vấn (Rules):
                         try {
                             const parsed = JSON.parse(buffer);
                             if (!parsed.message?.thinking && parsed.message?.content) {
-                                const content = parsed.message.content;
-                                chunks.push(content);
-                                subscriber.next({
-                                    data: JSON.stringify({
-                                        type: 'text',
-                                        content,
-                                    }),
-                                });
+                                pendingStreamText += parsed.message.content;
                             }
                         }
                         catch {
                             this.logger.warn(`Không parse được buffer còn lại: ${buffer}`);
                         }
                     }
-                    const fullResponse = chunks.join('');
+                    emitCleanText(true);
+                    sendProductsEvent();
+                    const fullResponse = chunks.join('').trim();
                     if (maKH) {
                         await this.saveChatHistory(message, fullResponse, maKH);
                     }

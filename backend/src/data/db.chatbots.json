@@ -1,46 +1,46 @@
 [
   {
-    "id": "CB001",
-    "maKH": "KH001",
-    "cauHoi": "Shop đang có những danh mục đèn nào?",
-    "cauTraLoi": "Dạ shop có 5 danh mục: Đèn bàn, Đèn LED, Đèn ngủ, Đèn chùm và Phụ kiện ạ.",
-    "timestamp": "2026-10-10T08:30:00.000Z",
-    "nguCanh": "TuVanKhachHang",
-    "trangThai": "DaPhanHoi"
-  },
-  {
-    "id": "CB002",
+    "id": "CB1793625844548",
     "maKH": "KH002",
-    "cauHoi": "Em muốn mua đèn bàn chống cận cho con học bài, có mẫu nào không?",
-    "cauTraLoi": "Dạ có ạ. Anh/chị có thể xem Đèn bàn LED chống cận Lumi Desk Pro (SP001) hoặc Đèn bàn học sinh Lumi Study Basic (SP005) ạ.",
-    "timestamp": "2026-10-12T08:50:00.000Z",
+    "cauHoi": "Chào shop, mình đang tìm một chiếc đèn bàn để làm việc buổi tối, ngân sách tầm 500k đổ lại",
+    "cauTraLoi": "Ồ, vậy anh/chị cần một chiếc đèn bàn để làm việc buổi tối, ngân sách khoảng 500k – ấn tượng! Mình gợi ý 3 mẫu phù hợp nhất trong tầm giá này:\n\n-  Đèn bàn LED chống cận Lumi Desk Pro – 550.000đ (chống cận, ánh sáng tự nhiên, phù hợp học tập làm việc)  \n-  Đèn bàn học sinh Lumi Study Basic – 210.000đ (giá rẻ, gọn nhẹ, dễ dùng, phù hợp làm việc tại bàn)  \n-  Đèn kẹp bàn Lumi Clamp Light – 390.000đ (dễ lắp đặt, tiện dụng khi làm việc trên bàn nhỏ)\n\nAnh/chị muốn chọn mẫu nào? Nếu cần thêm gợi ý về độ bền, thiết kế hoặc màu sắc, mình có thể tư vấn thêm nhé! 😊",
+    "timestamp": "2026-11-02T13:24:04.548Z",
     "nguCanh": "TuVanKhachHang",
     "trangThai": "DaPhanHoi"
   },
   {
-    "id": "CB003",
-    "maKH": "KH003",
-    "cauHoi": "Đèn chùm pha lê còn hàng không, giá khoảng bao nhiêu?",
-    "cauTraLoi": "Dạ Đèn chùm pha lê Lumi Crystal 12 nhánh (SP019) đang còn hàng, giá 1.850.000đ ạ.",
-    "timestamp": "2026-10-14T10:05:00.000Z",
+    "id": "CB1793625888130",
+    "maKH": "KH002",
+    "cauHoi": "Thế còn loại nào thiết kế cổ điển hơn không",
+    "cauTraLoi": "Vậy anh/chị muốn thiết kế cổ điển – nhẹ nhàng, mang phong cách vintage thì mình gợi ý:\n\n- Đèn bàn gỗ vintage Lumi Wood – 680.000đ (thiết kế cổ điển, sang trọng, phù hợp với không gian phòng làm việc hoặc phòng học)  \n- Đèn bàn thông minh Lumi Smart Desk – 780.000đ (có thiết kế hiện đại nhưng vẫn giữ nét tinh tế, có thể kết hợp cổ điển với hiện đại)  \n- Đèn ngủ hình mây Lumi Cloud – 190.000đ (thiết kế nhẹ nhàng, mây, rất phù hợp với phong cách cổ điển – dịu nhẹ)\n\nTuy nhiên, nếu anh/chị muốn **thiết kế cổ điển rõ nét**, thì nên ưu tiên:  \n  \n\nNếu muốn giữ giá trong tầm 500k và vẫn có vẻ cổ điển, có thể cân nhắc thêm các sản phẩm như khung ảnh hoặc cây cảnh để phối hợp – mình có thể gợi ý thêm nếu cần nhé! 😊",
+    "timestamp": "2026-11-02T13:24:48.130Z",
     "nguCanh": "TuVanKhachHang",
     "trangThai": "DaPhanHoi"
   },
   {
-    "id": "CB004",
-    "maKH": "KH004",
-    "cauHoi": "Shop có mã giảm giá cho dây LED RGB không?",
-    "cauTraLoi": "Dạ đơn từ 400.000đ có thể dùng mã LUMIFIX50 giảm ngay 50.000đ ạ.",
-    "timestamp": "2026-10-15T13:40:00.000Z",
+    "id": "CB1793625912470",
+    "maKH": "KH002",
+    "cauHoi": "Vậy shop có bán quần áo không?",
+    "cauTraLoi": "Shop hiện không bán quần áo, chỉ chuyên cung cấp các sản phẩm thiết bị chiếu sáng, phụ kiện thông minh và đồ dùng học tập – gia đình.  \n\nNếu anh/chị muốn tìm đèn bàn, đèn ngủ hoặc thiết bị hỗ trợ làm việc – học tập, mình rất sẵn lòng tư vấn nhé! 😊",
+    "timestamp": "2026-11-02T13:25:12.470Z",
     "nguCanh": "TuVanKhachHang",
     "trangThai": "DaPhanHoi"
   },
   {
-    "id": "CB005",
-    "maKH": "KH005",
-    "cauHoi": "Mình muốn hủy đơn đèn chùm hiện đại được không?",
-    "cauTraLoi": "Dạ được ạ. Đơn DH004 đã được ghi nhận hủy và hoàn lại tồn kho sản phẩm SP020.",
-    "timestamp": "2026-10-16T09:20:00.000Z",
+    "id": "CB1793625936881",
+    "maKH": "KH002",
+    "cauHoi": "Tư vấn cho mình các loại đèn ngủ đi.",
+    "cauTraLoi": "Vậy anh/chị muốn tìm đèn ngủ – mình gợi ý 3 mẫu phù hợp về thiết kế và chức năng:\n\n- Đèn ngủ hình mây Lumi Cloud – 190.000đ (thiết kế nhẹ nhàng, phù hợp phong cách cổ điển, tạo cảm giác ấm áp)  \n- Đèn ngủ silicone Lumi Soft Pet – 150.000đ (mềm mại, thiết kế như thú cưng, rất dễ phối với phòng trẻ em hoặc phòng ngủ)  \n- Đèn ngủ mặt trăng Lumi Moon 3D – 270.000đ (thiết kế 3D, ánh sáng dịu, rất phù hợp cho giấc ngủ)\n\nNếu anh/chị muốn chọn mẫu có thiết kế cổ điển hoặc sang trọng, mình có thể gợi ý thêm nhé! 😊",
+    "timestamp": "2026-11-02T13:25:36.881Z",
+    "nguCanh": "TuVanKhachHang",
+    "trangThai": "DaPhanHoi"
+  },
+  {
+    "id": "CB1793626307636",
+    "maKH": "KH002",
+    "cauHoi": "bạn thấy tôi đep trai không",
+    "cauTraLoi": "Cảm ơn anh/chị đã hỏi! 😊 Mình chỉ là một trợ lý ảo nên không thể \"nhìn\" hay \"đánh giá\" vẻ ngoài của ai – nhưng nếu anh/chị muốn, mình có thể tư vấn các sản phẩm phù hợp để tạo cảm giác ấm áp, hiện đại hoặc sang trọng như đèn ngủ, đèn bàn, hoặc phụ kiện thông minh để phối đồ trong phòng ngủ nhé! 🌟",
+    "timestamp": "2026-11-02T13:31:47.636Z",
     "nguCanh": "TuVanKhachHang",
     "trangThai": "DaPhanHoi"
   }

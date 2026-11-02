@@ -13,6 +13,7 @@ import { RolesGuard } from './common/guards/roles.guard.js';
 import { DatabaseModule } from './database/database.module.js';
 import { AiChatbotModule } from './modules/ai-chatbot/ai-chatbot.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
+import { CartsModule } from './modules/carts/carts.module.js';
 import { CategoriesModule } from './modules/categories/categories.module.js';
 import { CustomersModule } from './modules/customers/customers.module.js';
 import { OrdersModule } from './modules/orders/orders.module.js';
@@ -30,6 +31,7 @@ AppModule = __decorate([
             CustomersModule,
             VouchersModule,
             OrdersModule,
+            CartsModule,
             AiChatbotModule,
         ],
         controllers: [AppController],

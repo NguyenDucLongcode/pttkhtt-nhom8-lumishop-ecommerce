@@ -13,6 +13,7 @@ export interface ProductItem {
     giaBan: number;
     soLuongTon: number;
     hinhAnh?: string;
+    categoryId?: string;
     trangThai?: string;
     [key: string]: any;
 }
@@ -32,14 +33,19 @@ export interface ChatbotEntry {
     trangThai?: string;
     [key: string]: any;
 }
+export interface ConversationMessage {
+    role: string;
+    content: string;
+}
 export declare class AiChatbotService {
     private readonly dbService;
     private readonly logger;
     private readonly ollamaUrl;
     private readonly modelName;
     constructor(dbService: DbService);
-    private findMatchingProducts;
-    streamChat(message: string, maKH?: string): Observable<MessageEvent>;
+    private extractSearchKeyword;
+    private countTotalProducts;
+    streamChat(message: string, maKH?: string, history?: ConversationMessage[]): Observable<MessageEvent>;
     getChatHistory(maKH: string): Promise<ChatbotEntry[]>;
     saveChatHistory(cauHoi: string, cauTraLoi: string, maKH?: string): Promise<void>;
 }

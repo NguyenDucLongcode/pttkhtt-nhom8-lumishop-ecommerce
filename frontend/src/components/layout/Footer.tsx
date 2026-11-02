@@ -44,7 +44,7 @@ export const Footer: React.FC = () => {
             </div>
             <div>
               <p className="font-bold text-neutral-200 text-sm">Tư Vấn AI 24/7</p>
-              <p className="text-[11px] text-neutral-500 mt-0.5">Trợ lý hỗ trợ chọn đèn</p>
+              <p className="text-[11px] text-neutral-500 mt-0.5">Trợ lý tư vấn sản phẩm</p>
             </div>
           </div>
         </div>
@@ -64,7 +64,7 @@ export const Footer: React.FC = () => {
               </span>
             </div>
             <p className="text-neutral-400 text-xs leading-relaxed max-w-sm">
-              Hệ thống cung cấp thiết bị đèn học chống cận thị, đèn bàn thông minh và phụ kiện chiếu sáng chất lượng cao, chuẩn nhiệt độ màu bảo vệ đôi mắt Việt.
+              Hệ thống bán lẻ thiết bị gia dụng thông minh, đồ dùng học tập, thiết bị công nghệ và đồ trang trí hiện đại, cam kết chính hãng 100% với chất lượng và mức giá tốt nhất.
             </p>
             <div className="pt-2 text-[11px] text-neutral-400 space-y-1">
               <p>📍 Địa chỉ: Nguyễn Ái Quốc, TP. Biên Hòa, Đồng Nai</p>
@@ -77,11 +77,11 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-2 space-y-3">
             <h4 className="text-neutral-200 font-bold tracking-wider uppercase text-[11px]">Danh Mục</h4>
             <ul className="space-y-2">
-              <li><Link to="/products?categoryId=DM001" className="hover:text-white transition-colors">Đèn bàn học</Link></li>
-              <li><Link to="/products?categoryId=DM002" className="hover:text-white transition-colors">Đèn LED decor</Link></li>
-              <li><Link to="/products?categoryId=DM003" className="hover:text-white transition-colors">Đèn ngủ hẹn giờ</Link></li>
-              <li><Link to="/products?categoryId=DM004" className="hover:text-white transition-colors">Đèn chùm thả</Link></li>
-              <li><Link to="/products?categoryId=DM005" className="hover:text-white transition-colors">Phụ kiện & Adapter</Link></li>
+              <li><Link to="/products?categoryId=DM001" className="hover:text-white transition-colors">Thiết bị gia dụng</Link></li>
+              <li><Link to="/products?categoryId=DM002" className="hover:text-white transition-colors">Đồ dùng học tập</Link></li>
+              <li><Link to="/products?categoryId=DM003" className="hover:text-white transition-colors">Thiết bị công nghệ</Link></li>
+              <li><Link to="/products?categoryId=DM004" className="hover:text-white transition-colors">Đồ trang trí</Link></li>
+              <li><Link to="/products?categoryId=DM005" className="hover:text-white transition-colors">Phụ kiện tiện ích</Link></li>
             </ul>
           </div>
 

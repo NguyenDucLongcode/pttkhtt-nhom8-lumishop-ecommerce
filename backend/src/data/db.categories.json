@@ -1,36 +1,71 @@
 [
   {
     "id": "DM001",
-    "tenDanhMuc": "Đèn bàn",
-    "moTa": "Đèn bàn học tập và làm việc bảo vệ thị lực, chống cận thị",
+    "tenDanhMuc": "Đèn bàn & Học tập",
+    "moTa": "Đèn bàn, đèn học chống cận, bảo vệ thị lực",
     "createdAt": "2026-01-05T08:00:00.000Z",
     "updatedAt": "2026-01-05T08:00:00.000Z"
   },
   {
     "id": "DM002",
-    "tenDanhMuc": "Đèn LED",
-    "moTa": "Đèn LED chiếu sáng, RGB trang trí và tiết kiệm điện",
+    "tenDanhMuc": "Đèn LED & Trang trí",
+    "moTa": "Đèn LED RGB, đèn neon, đèn trang trí không gian",
     "createdAt": "2026-01-05T08:00:00.000Z",
     "updatedAt": "2026-01-05T08:00:00.000Z"
   },
   {
     "id": "DM003",
-    "tenDanhMuc": "Đèn ngủ",
-    "moTa": "Đèn ngủ ánh sáng dịu, hẹn giờ và hỗ trợ giấc ngủ",
+    "tenDanhMuc": "Đèn ngủ & Thư giãn",
+    "moTa": "Đèn ngủ ánh sáng dịu, đèn chiếu sao, hỗ trợ giấc ngủ",
     "createdAt": "2026-01-05T08:00:00.000Z",
     "updatedAt": "2026-01-05T08:00:00.000Z"
   },
   {
     "id": "DM004",
-    "tenDanhMuc": "Đèn chùm",
-    "moTa": "Đèn chùm trang trí nội thất cho phòng khách và phòng ăn",
+    "tenDanhMuc": "Thiết bị ngoại vi",
+    "moTa": "Chuột, bàn phím, lót chuột, tai nghe cho học tập và gaming",
     "createdAt": "2026-01-05T08:00:00.000Z",
     "updatedAt": "2026-01-05T08:00:00.000Z"
   },
   {
     "id": "DM005",
-    "tenDanhMuc": "Phụ kiện",
-    "moTa": "Phụ kiện đèn: bóng đèn, chân đế, remote, adapter",
+    "tenDanhMuc": "Đồ dùng học tập",
+    "moTa": "Bút, sổ tay, giá đỡ sách, kệ để đồ",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM006",
+    "tenDanhMuc": "Gia dụng thông minh",
+    "moTa": "Ổ cắm thông minh, quạt mini, máy tạo ẩm",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM007",
+    "tenDanhMuc": "Phụ kiện công nghệ",
+    "moTa": "Sạc dự phòng, cáp sạc, giá đỡ điện thoại",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM008",
+    "tenDanhMuc": "Đồ trang trí bàn làm việc",
+    "moTa": "Mô hình nhỏ, cây cảnh mini, đồng hồ để bàn",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM009",
+    "tenDanhMuc": "Thiết bị nhà thông minh",
+    "moTa": "Camera, cảm biến, điều khiển hồng ngoại",
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": "DM010",
+    "tenDanhMuc": "Đồ gia dụng đa năng",
+    "moTa": "Kệ đa năng, móc treo, hộp đựng đồ",
     "createdAt": "2026-01-05T08:00:00.000Z",
     "updatedAt": "2026-01-05T08:00:00.000Z"
   }

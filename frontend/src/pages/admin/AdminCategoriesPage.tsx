@@ -90,7 +90,7 @@ export const AdminCategoriesPage: React.FC = () => {
             Quản Lý Danh Mục
           </h1>
           <p className="text-xs text-neutral-500 mt-1">
-            Phân loại các dòng sản phẩm đèn bàn & thiết bị chiếu sáng
+            Phân loại các ngành hàng và nhóm sản phẩm kinh doanh của LumiShop
           </p>
         </div>
 
@@ -169,7 +169,7 @@ export const AdminCategoriesPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <Input
             label="Tên danh mục (*)"
-            placeholder="vd: Đèn thông minh"
+            placeholder="vd: Thiết bị gia dụng"
             value={tenDanhMuc}
             onChange={(e) => setTenDanhMuc(e.target.value)}
             required
@@ -181,7 +181,7 @@ export const AdminCategoriesPage: React.FC = () => {
               rows={3}
               value={moTa}
               onChange={(e) => setMoTa(e.target.value)}
-              placeholder="Mô tả công dụng và các dòng đèn thuộc danh mục này..."
+              placeholder="Mô tả công dụng và các dòng sản phẩm thuộc danh mục này..."
               className="p-3 bg-white border border-neutral-200 rounded-md focus:outline-none focus:border-[#c59b27] text-xs"
             />
           </div>

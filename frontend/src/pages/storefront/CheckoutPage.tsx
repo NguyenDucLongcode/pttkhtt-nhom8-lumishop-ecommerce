@@ -264,7 +264,7 @@ export const CheckoutPage: React.FC = () => {
                     Giao Hàng & Thu Tiền Tận Nơi (COD)
                   </h4>
                   <p className="text-emerald-800 text-xs mt-1 leading-relaxed">
-                    Bạn chỉ cần chuẩn bị số tiền mặt <strong className="font-extrabold">{formatCurrency(createdOrder.tongTien)}</strong> khi nhân viên bưu tá giao hàng. Bạn được kiểm tra đèn trước khi nhận!
+                    Bạn chỉ cần chuẩn bị số tiền mặt <strong className="font-extrabold">{formatCurrency(createdOrder.tongTien)}</strong> khi nhân viên bưu tá giao hàng. Bạn được kiểm tra sản phẩm trước khi nhận!
                   </p>
                 </div>
               </div>
@@ -309,9 +309,9 @@ export const CheckoutPage: React.FC = () => {
       <div className="max-w-md mx-auto my-16 p-8 bg-white rounded-2xl border border-neutral-200 text-center space-y-4 shadow-sm animate-page-enter">
         <ShoppingBag className="w-12 h-12 text-neutral-300 mx-auto" />
         <h2 className="text-sm font-bold text-neutral-900">Giỏ hàng của bạn đang trống</h2>
-        <p className="text-xs text-neutral-500">Hãy thêm sản phẩm đèn bàn yêu thích vào giỏ trước khi thanh toán.</p>
+        <p className="text-xs text-neutral-500">Hãy thêm sản phẩm yêu thích vào giỏ trước khi thanh toán.</p>
         <Link to="/products">
-          <Button size="sm">Xem danh mục đèn</Button>
+          <Button size="sm">Xem danh mục sản phẩm</Button>
         </Link>
       </div>
     )
@@ -456,7 +456,7 @@ export const CheckoutPage: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-[11px] text-neutral-500 mt-1 leading-relaxed">
-                    Nhận hàng tại nhà, kiểm tra tình trạng bóng đèn và đóng gói nguyên vẹn trước khi thanh toán tiền mặt cho bưu tá.
+                    Nhận hàng tại nhà, kiểm tra tình trạng sản phẩm và đóng gói nguyên vẹn trước khi thanh toán tiền mặt cho bưu tá.
                   </p>
                 </div>
               </label>

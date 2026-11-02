@@ -1,0 +1,13 @@
+[
+  {
+    "id": "CART_KH002",
+    "maKH": "KH002",
+    "items": [
+      {
+        "maSP": "SP001",
+        "soLuong": 2
+      }
+    ],
+    "updatedAt": "2026-11-02T13:26:12.490Z"
+  }
+]

@@ -35,15 +35,15 @@ export const HomePage: React.FC = () => {
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#faf5e8] border border-[#e6d3a3] text-[#c59b27] text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Công nghệ chiếu sáng tự nhiên RG0 không nguy hại</span>
+                <span>Mua sắm đồ gia dụng & thiết bị thông minh chính hãng</span>
               </div>
 
               <h1 className="text-3xl sm:text-5xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
-                Ánh Sáng Dịu Mắt Cho Góc Làm Việc & Học Tập
+                Nâng Cấp Không Gian Sống Cùng LumiShop
               </h1>
 
               <p className="text-neutral-600 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                Đèn bàn LED LumiShop đạt chỉ số hoàn màu CRI &gt; 90, lọc tối đa tia ánh sáng xanh gây mỏi mắt. Thiết kế tối giản, tinh tế cho không gian hiện đại.
+                Mua sắm đồ gia dụng, thiết bị công nghệ, đồ dùng học tập và phụ kiện tiện ích thông minh chính hãng. Thiết kế tối giản, tinh tế nâng tầm chất lượng cuộc sống của bạn.
               </p>
 
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
@@ -56,22 +56,22 @@ export const HomePage: React.FC = () => {
                 </Link>
 
                 <Link
-                  to="/products?categoryId=DM001"
+                  to="/products"
                   className="px-6 py-3 rounded-md bg-neutral-100 hover:bg-neutral-200/80 text-neutral-800 font-semibold text-xs sm:text-sm transition-all duration-200"
                 >
-                  Đèn học chống cận
+                  Xem danh mục nổi bật
                 </Link>
               </div>
 
               {/* 3 Metrics */}
               <div className="grid grid-cols-3 gap-6 pt-6 border-t border-neutral-200/70 max-w-md mx-auto lg:mx-0 text-left">
                 <div>
-                  <p className="text-xl sm:text-2xl font-extrabold text-neutral-950">98%</p>
-                  <p className="text-[11px] text-neutral-500 font-medium mt-0.5">Hài lòng thị giác</p>
+                  <p className="text-xl sm:text-2xl font-extrabold text-neutral-950">100%</p>
+                  <p className="text-[11px] text-neutral-500 font-medium mt-0.5">Sản phẩm chính hãng</p>
                 </div>
                 <div>
-                  <p className="text-xl sm:text-2xl font-extrabold text-neutral-950">CRI &gt; 90</p>
-                  <p className="text-[11px] text-neutral-500 font-medium mt-0.5">Màu sắc chân thực</p>
+                  <p className="text-xl sm:text-2xl font-extrabold text-neutral-950">24/7</p>
+                  <p className="text-[11px] text-neutral-500 font-medium mt-0.5">Tư vấn AI thông minh</p>
                 </div>
                 <div>
                   <p className="text-xl sm:text-2xl font-extrabold text-neutral-950">12T</p>
@@ -85,7 +85,7 @@ export const HomePage: React.FC = () => {
               <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100 shadow-xl">
                 <img
                   src="https://picsum.photos/seed/SP001/800/800"
-                  alt="Đèn bàn Lumi Pro Desk"
+                  alt="Sản phẩm nổi bật LumiShop"
                   className="w-full aspect-square object-cover"
                 />
                 <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-xl border border-neutral-200/80 shadow-lg flex items-center justify-between">
@@ -94,14 +94,14 @@ export const HomePage: React.FC = () => {
                       Được bình chọn tốt nhất
                     </span>
                     <h4 className="text-xs font-bold text-neutral-900 mt-0.5">
-                      Lumi Desk Pro Chống Cận Thị
+                      Thiết Bị Tiện Ích Thông Minh
                     </h4>
                     <p className="text-xs text-neutral-900 font-extrabold mt-1">
                       550.000₫
                     </p>
                   </div>
                   <Link
-                    to="/products/SP001"
+                    to="/products"
                     className="px-3.5 py-1.5 rounded-md bg-neutral-900 hover:bg-[#c59b27] text-white hover:text-black font-semibold text-xs transition-colors"
                   >
                     Xem ngay
@@ -161,7 +161,7 @@ export const HomePage: React.FC = () => {
               Danh Mục Sản Phẩm
             </h2>
             <p className="text-xs text-neutral-500 mt-0.5">
-              Phân loại thiết bị chiếu sáng theo từng nhu cầu sử dụng
+              Đa dạng ngành hàng phục vụ nhu cầu sống và làm việc hiện đại
             </p>
           </div>
           <Link
@@ -215,7 +215,7 @@ export const HomePage: React.FC = () => {
               Sản Phẩm Đang Kinh Doanh
             </h2>
             <p className="text-xs text-neutral-500 mt-0.5">
-              Các mẫu đèn bàn LED học sinh, đèn đọc sách và phụ kiện chính hãng
+              Đồ gia dụng, thiết bị công nghệ, đồ dùng học tập và phụ kiện tiện ích chính hãng
             </p>
           </div>
           <Link

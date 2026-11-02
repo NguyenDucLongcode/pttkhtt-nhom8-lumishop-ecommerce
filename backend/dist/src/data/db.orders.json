@@ -148,5 +148,30 @@
     "paymentId": "TT005",
     "createdAt": "2026-10-18T19:10:00.000Z",
     "updatedAt": "2026-10-19T15:30:00.000Z"
+  },
+  {
+    "id": "DH1793614493941",
+    "maKH": "KH002",
+    "diaChiGiao": "Khu ph? 3, Phu?ng Tr?ng D�i, TP. Bi�n H�a",
+    "phuongThucTT": "ChuyenKhoan",
+    "items": [
+      {
+        "maSP": "SP002",
+        "tenSP": "Đèn bàn thông minh Lumi Smart Desk",
+        "giaBan": 780000,
+        "soLuong": 1,
+        "thanhTien": 780000
+      }
+    ],
+    "tongTienHang": 780000,
+    "tienGiamGia": 78000,
+    "phiShip": 30000,
+    "tongTien": 732000,
+    "voucherCode": "LUMI10",
+    "ngayDat": "2026-11-02T10:14:53.939Z",
+    "trangThai": "ChoXacNhan",
+    "paymentId": "TT1793614493941",
+    "createdAt": "2026-11-02T10:14:53.939Z",
+    "updatedAt": "2026-11-02T10:14:53.939Z"
   }
 ]

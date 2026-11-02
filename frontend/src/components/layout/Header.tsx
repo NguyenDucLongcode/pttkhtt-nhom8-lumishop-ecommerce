@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <p className="flex items-center gap-1.5">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#c59b27]"></span>
-            <span>Bộ sưu tập đèn bàn bảo vệ mắt & decor tối giản 2026</span>
+            <span>Mua sắm đồ gia dụng, thiết bị công nghệ & tiện ích thông minh chính hãng</span>
           </p>
           <div className="flex items-center gap-4 text-neutral-400">
             <span>Bảo hành chính hãng 12 tháng</span>
@@ -49,7 +49,7 @@ export const Header: React.FC = () => {
                 LUMI<span className="text-[#c59b27]">SHOP</span>
               </span>
               <span className="text-[9px] text-neutral-400 font-semibold tracking-widest uppercase mt-0.5">
-                Lighting & Living
+                Living & Technology
               </span>
             </div>
           </Link>
@@ -61,7 +61,7 @@ export const Header: React.FC = () => {
           >
             <input
               type="text"
-              placeholder="Tìm kiếm đèn học chống cận, đèn LED decor..."
+              placeholder="Tìm kiếm sản phẩm, đồ gia dụng, thiết bị..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full h-9 pl-9 pr-4 text-xs bg-neutral-100/80 border border-transparent rounded-md focus:bg-white focus:border-[#c59b27] focus:ring-1 focus:ring-[#c59b27]/30 focus:outline-none transition-all placeholder:text-neutral-400"
@@ -76,10 +76,6 @@ export const Header: React.FC = () => {
             </Link>
             <Link to="/products" className="hover:text-neutral-950 transition-colors">
               Sản phẩm
-            </Link>
-            <Link to="/products?categoryId=DM001" className="hover:text-neutral-950 transition-colors flex items-center gap-1">
-              <span>Đèn bàn học</span>
-              <span className="text-[9px] font-bold bg-[#faf5e8] text-[#c59b27] px-1.5 py-0.2 rounded border border-[#e6d3a3]">Hot</span>
             </Link>
             {isAuthenticated && (
               <Link
@@ -169,7 +165,7 @@ export const Header: React.FC = () => {
             <form onSubmit={handleSearch} className="relative">
               <input
                 type="text"
-                placeholder="Tìm sản phẩm..."
+                placeholder="Tìm kiếm sản phẩm, đồ gia dụng, thiết bị..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full h-9 pl-9 pr-4 text-xs bg-neutral-100 rounded-md border-0 focus:ring-1 focus:ring-[#c59b27]"

@@ -12,10 +12,11 @@ describe('AiChatbotService', () => {
   const sampleProducts: ProductItem[] = [
     {
       id: 'SP001',
-      tenSP: 'Đèn bàn thông minh Lumi Smart Desk Lamp Pro',
+      tenSP: 'Đèn bàn LED chống cận Lumi Desk Pro',
       moTa: 'Đèn bàn bảo vệ mắt điều khiển qua ứng dụng và giọng nói',
       giaBan: 550000,
       soLuongTon: 40,
+      categoryId: 'DM001',
       hinhAnh: 'https://lumishop.vn/images/sp001.jpg',
     },
     {
@@ -24,14 +25,16 @@ describe('AiChatbotService', () => {
       moTa: 'Dải đèn LED RGB 16 triệu màu đồng bộ âm nhạc',
       giaBan: 320000,
       soLuongTon: 85,
+      categoryId: 'DM002',
       hinhAnh: 'https://lumishop.vn/images/sp002.jpg',
     },
     {
       id: 'SP003',
-      tenSP: 'Công tắc cảm ứng Lumi Smart Switch 3 nút',
-      moTa: 'Công tắc điều khiển đèn thông minh qua wifi và zigbee',
+      tenSP: 'Đèn bàn thông minh Lumi Smart Desk V2',
+      moTa: 'Đèn bàn học sinh cao cấp tích hợp sạc không dây',
       giaBan: 750000,
       soLuongTon: 15,
+      categoryId: 'DM001',
       hinhAnh: 'https://lumishop.vn/images/sp003.jpg',
     },
   ];
@@ -48,56 +51,53 @@ describe('AiChatbotService', () => {
     service = new AiChatbotService(mockDbService as unknown as DbService);
   });
 
-  describe('RAG Keyword Matching (findMatchingProducts)', () => {
-    it('Tìm đúng sản phẩm theo tên (ví dụ: "đèn bàn")', () => {
-      const matched = (service as any).findMatchingProducts(
-        'Shop có đèn bàn thông minh không?',
-        sampleProducts,
+  describe('Keyword Extraction & Product Count (Conversation Memory)', () => {
+    it('Trích xuất đúng từ khóa chính từ câu hỏi (ví dụ: "đèn bàn")', () => {
+      const keyword = (service as any).extractSearchKeyword(
+        'Shop có mẫu đèn bàn nào chống cận tốt không em?',
+        [sampleProducts[0]],
       );
 
-      expect(matched.length).toBeGreaterThan(0);
-      expect(matched[0].id).toBe('SP001');
+      expect(keyword).toBe('đèn bàn');
     });
 
-    it('Tìm đúng sản phẩm theo mô tả (ví dụ: "đồng bộ âm nhạc")', () => {
-      const matched = (service as any).findMatchingProducts(
-        'Mình muốn tìm loại led có đồng bộ âm nhạc',
-        sampleProducts,
+    it('Ghi nhớ ngữ cảnh: Khách hỏi câu nối tiếp "dùng để trang trí á bạn" vẫn trích xuất đúng "đèn bàn"', () => {
+      const history = [
+        { role: 'user', content: 'Tư vấn đèn bàn' },
+        { role: 'assistant', content: 'Dạ shop có nhiều mẫu đèn bàn thông minh và đèn học ạ.' },
+      ];
+
+      const keyword = (service as any).extractSearchKeyword(
+        'dùng để trang trí á bạn',
+        [sampleProducts[0]],
+        history,
       );
 
-      expect(matched.length).toBeGreaterThan(0);
-      expect(matched[0].id).toBe('SP002');
+      expect(keyword).toBe('đèn bàn');
     });
 
-    it('Giới hạn lấy tối đa 3 sản phẩm', () => {
-      const matched = (service as any).findMatchingProducts(
-        'Lumi thông minh',
-        sampleProducts,
-      );
-
-      expect(matched.length).toBeLessThanOrEqual(3);
+    it('Đếm tổng số sản phẩm trong DB có chứa từ khóa đó', () => {
+      const count = (service as any).countTotalProducts('đèn bàn', sampleProducts);
+      // Có 2 sản phẩm là đèn bàn trong sampleProducts
+      expect(count).toBe(2);
     });
 
-    it('Trả về mảng rỗng nếu câu hỏi không khớp sản phẩm nào', () => {
-      const matched = (service as any).findMatchingProducts(
-        'Thời tiết hôm nay thế nào?',
-        sampleProducts,
-      );
-
-      expect(matched).toHaveLength(0);
+    it('Trả về 0 nếu không tìm thấy sản phẩm nào theo từ khóa lạ', () => {
+      const count = (service as any).countTotalProducts('bút bi', sampleProducts);
+      expect(count).toBe(0);
     });
   });
 
-  describe('streamChat', () => {
-    it('Phát event type: "products" khi tìm thấy sản phẩm phù hợp', async () => {
-      // Mock fetch Ollama
+  describe('streamChat (In-Context & Regex Product Tag)', () => {
+    it('Phát event type: "products" với metadata và xóa sạch mã [PRODUCT:ID] khỏi text stream', async () => {
+      // Mock fetch Ollama trả về stream chứa mã [PRODUCT:SP001]
       const mockReadableStream = new ReadableStream({
         start(controller) {
           const encoder = new TextEncoder();
           controller.enqueue(
             encoder.encode(
               JSON.stringify({
-                message: { content: 'Dạ shop có mẫu đèn bàn học' },
+                message: { content: 'Dạ em gợi ý cho anh/chị mẫu đèn bàn Pro này ạ. [PRODUCT:SP001]' },
                 done: false,
               }) + '\n',
             ),
@@ -105,7 +105,7 @@ describe('AiChatbotService', () => {
           controller.enqueue(
             encoder.encode(
               JSON.stringify({
-                message: { content: ' rất tốt ạ!' },
+                message: { content: ' Rất phù hợp cho bé học bài ạ!' },
                 done: true,
               }) + '\n',
             ),
@@ -128,26 +128,124 @@ describe('AiChatbotService', () => {
         });
       });
 
-      // Event đầu tiên phải là type: 'products'
-      expect(events.length).toBeGreaterThanOrEqual(2);
-      expect(events[0].type).toBe('products');
-      expect(events[0].content).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ id: 'SP001' }),
-        ]),
-      );
+      // Kiểm tra có event products
+      const productEvents = events.filter((e) => e.type === 'products');
+      expect(productEvents.length).toBe(1);
+      expect(productEvents[0].content).toHaveLength(1);
+      expect(productEvents[0].content[0].id).toBe('SP001');
+      expect(productEvents[0].searchKeyword).toBe('đèn bàn');
+      expect(productEvents[0].totalFound).toBeGreaterThanOrEqual(1);
 
-      // Các event tiếp theo phải là type: 'text'
+      // Kiểm tra các event text: TUYỆT ĐỐI KHÔNG CHỨA [PRODUCT:SP001]
       const textEvents = events.filter((e) => e.type === 'text');
-      expect(textEvents.length).toBeGreaterThan(0);
-      expect(textEvents.map((e) => e.content).join('')).toBe(
-        'Dạ shop có mẫu đèn bàn học rất tốt ạ!',
-      );
+      const fullText = textEvents.map((e) => e.content).join('');
+      expect(fullText).not.toContain('[PRODUCT:SP001]');
+      expect(fullText).toContain('Dạ em gợi ý cho anh/chị mẫu đèn bàn Pro này ạ.');
+      expect(fullText).toContain('Rất phù hợp cho bé học bài ạ!');
 
       // Event kết thúc phải là type: 'done' với content: '[DONE]'
       const lastEvent = events[events.length - 1];
       expect(lastEvent.type).toBe('done');
       expect(lastEvent.content).toBe('[DONE]');
+    });
+
+    it('Không phát event products nếu AI từ chối món hàng không có (không chèn mã PRODUCT)', async () => {
+      // Mock fetch Ollama từ chối mặt hàng
+      const mockReadableStream = new ReadableStream({
+        start(controller) {
+          const encoder = new TextEncoder();
+          controller.enqueue(
+            encoder.encode(
+              JSON.stringify({
+                message: { content: 'Dạ LumiShop hiện không bán bút bi ạ, shop chỉ chuyên các dòng đèn thông minh thôi ạ!' },
+                done: true,
+              }) + '\n',
+            ),
+          );
+          controller.close();
+        },
+      });
+
+      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
+        ok: true,
+        body: mockReadableStream,
+      } as unknown as Response);
+
+      const events: any[] = [];
+      await new Promise<void>((resolve, reject) => {
+        service.streamChat('Shop có bán bút bi không?').subscribe({
+          next: (e) => events.push(JSON.parse(e.data as string)),
+          error: reject,
+          complete: resolve,
+        });
+      });
+
+      // Không có event type products nào được phát
+      const productEvents = events.filter((e) => e.type === 'products');
+      expect(productEvents).toHaveLength(0);
+
+      // Có text phản hồi
+      const textEvents = events.filter((e) => e.type === 'text');
+      expect(textEvents.length).toBeGreaterThan(0);
+      expect(textEvents.map((e) => e.content).join('')).toContain('không bán bút bi');
+    });
+
+    it('Truyền mảng lịch sử (Conversation Memory) vào messages gửi Ollama API theo đúng chuẩn', async () => {
+      let capturedBody: any = null;
+
+      const mockReadableStream = new ReadableStream({
+        start(controller) {
+          const encoder = new TextEncoder();
+          controller.enqueue(
+            encoder.encode(
+              JSON.stringify({
+                message: { content: 'Dạ em gợi ý mẫu đèn bàn vintage này rất hợp để trang trí ạ! [PRODUCT:SP003]' },
+                done: true,
+              }) + '\n',
+            ),
+          );
+          controller.close();
+        },
+      });
+
+      vi.spyOn(globalThis, 'fetch').mockImplementationOnce((_url, init) => {
+        if (init && init.body) {
+          capturedBody = JSON.parse(init.body as string);
+        }
+        return Promise.resolve({
+          ok: true,
+          body: mockReadableStream,
+        } as unknown as Response);
+      });
+
+      const history = [
+        { role: 'user', content: 'Tư vấn đèn bàn' },
+        { role: 'assistant', content: 'Shop có nhiều mẫu đèn bàn ạ, anh/chị cần loại nào?' },
+      ];
+
+      await new Promise<void>((resolve, reject) => {
+        service.streamChat('dùng để trang trí á bạn', undefined, history).subscribe({
+          next: () => {},
+          error: reject,
+          complete: resolve,
+        });
+      });
+
+      // Kiểm tra body gửi đến Ollama
+      expect(capturedBody).toBeDefined();
+      expect(Array.isArray(capturedBody.messages)).toBe(true);
+
+      // messages[0] là system prompt
+      expect(capturedBody.messages[0].role).toBe('system');
+      // messages[1] là câu hỏi cũ của user
+      expect(capturedBody.messages[1]).toEqual({ role: 'user', content: 'Tư vấn đèn bàn' });
+      // messages[2] là câu trả lời cũ của assistant
+      expect(capturedBody.messages[2]).toEqual({
+        role: 'assistant',
+        content: 'Shop có nhiều mẫu đèn bàn ạ, anh/chị cần loại nào?',
+      });
+      // messages[3] là câu hỏi mới nhất của user
+      expect(capturedBody.messages[3]).toEqual({ role: 'user', content: 'dùng để trang trí á bạn' });
     });
   });
 

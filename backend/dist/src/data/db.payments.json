@@ -38,5 +38,13 @@
     "phuongThuc": "ChuyenKhoan",
     "thoiGian": "2026-10-18T19:10:00.000Z",
     "trangThai": "DaThanhToan"
+  },
+  {
+    "id": "TT1793614493941",
+    "maDH": "DH1793614493941",
+    "soTien": 732000,
+    "phuongThuc": "ChuyenKhoan",
+    "thoiGian": "2026-11-02T10:14:53.939Z",
+    "trangThai": "ChoThanhToan"
   }
 ]

@@ -4,7 +4,11 @@ import type { ChatbotEntry, ProductCard } from '../types/chat.types'
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 
 export interface StreamChatHandlers {
-  onProducts?: (products: ProductCard[]) => void
+  onProducts?: (
+    products: ProductCard[],
+    searchKeyword?: string,
+    totalFound?: number
+  ) => void
   onTextChunk?: (chunk: string) => void
   onDone?: () => void
   onError?: (errorText: string) => void
@@ -15,9 +19,16 @@ export const chatbotApi = {
     return apiClient.get('/chat/history')
   },
 
-  streamChat: (message: string, handlers: StreamChatHandlers): (() => void) => {
+  streamChat: (
+    message: string,
+    handlers: StreamChatHandlers,
+    history?: Array<{ role: string; content: string }>
+  ): (() => void) => {
     const token = localStorage.getItem('lumishop_access_token')
     let url = `${API_BASE_URL}/chat/stream?message=${encodeURIComponent(message)}`
+    if (history && history.length > 0) {
+      url += `&history=${encodeURIComponent(JSON.stringify(history.slice(-6)))}`
+    }
     if (token) {
       url += `&token=${encodeURIComponent(token)}`
     }
@@ -43,7 +54,13 @@ export const chatbotApi = {
         }
 
         if (parsed.type === 'products' && Array.isArray(parsed.content)) {
-          handlers.onProducts?.(parsed.content)
+          handlers.onProducts?.(
+            parsed.content,
+            parsed.searchKeyword || '',
+            parsed.totalFound !== undefined
+              ? parsed.totalFound
+              : parsed.content.length
+          )
         }
 
         if (parsed.type === 'text' || parsed.text) {
@@ -64,7 +81,6 @@ export const chatbotApi = {
       eventSource.close()
     }
 
-    // Trả về hàm hủy để cho phép người dùng ấn nút "Dừng phản hồi"
     return () => {
       eventSource.close()
     }
