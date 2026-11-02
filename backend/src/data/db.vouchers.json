@@ -9,10 +9,10 @@
     "startDate": "2026-01-01T00:00:00.000Z",
     "endDate": "2026-12-31T23:59:59.000Z",
     "usageLimit": 200,
-    "usedCount": 18,
+    "usedCount": 19,
     "isActive": true,
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-10-01T00:00:00.000Z"
+    "updatedAt": "2026-11-02T10:14:53.939Z"
   },
   {
     "id": "VC002",
