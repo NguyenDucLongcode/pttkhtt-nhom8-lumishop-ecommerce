@@ -49,31 +49,73 @@ export const ChatbotWidget: React.FC = () => {
 
     let collectedCards: ProductCardType[] = []
 
-    eventSource.addEventListener('products', (e) => {
-      try {
-        const data = JSON.parse(e.data)
-        if (Array.isArray(data)) collectedCards = data
-      } catch {}
-    })
-
     eventSource.onmessage = (e) => {
-      if (e.data === '[DONE]') {
-        eventSource.close()
-        setIsStreaming(false)
-        setMessages((prev) => {
-          const updated = [...prev]
-          const last = updated[updated.length - 1]
-          if (last.role === 'assistant') last.products = collectedCards
-          return updated
-        })
-        return
+      try {
+        let raw = e.data
+        if (typeof raw === 'string' && (raw.startsWith('{') || raw.startsWith('"'))) {
+          try {
+            const firstParse = JSON.parse(raw)
+            raw = typeof firstParse === 'string' ? JSON.parse(firstParse) : firstParse
+          } catch {}
+        }
+
+        // 1. Trường hợp thẻ sản phẩm (RAG product cards)
+        if (raw.type === 'products' && Array.isArray(raw.content)) {
+          collectedCards = raw.content
+          setMessages((prev) => {
+            const updated = [...prev]
+            const last = updated[updated.length - 1]
+            if (last && last.role === 'assistant') {
+              last.products = collectedCards
+            }
+            return [...updated]
+          })
+          return
+        }
+
+        // 2. Tín hiệu hoàn tất
+        if (raw.type === 'done' || raw.content === '[DONE]' || e.data === '[DONE]') {
+          eventSource.close()
+          setIsStreaming(false)
+          setMessages((prev) => {
+            const updated = [...prev]
+            const last = updated[updated.length - 1]
+            if (last && last.role === 'assistant') {
+              last.products = collectedCards
+            }
+            return [...updated]
+          })
+          return
+        }
+
+        // 3. Từng token chữ (Streaming text)
+        if (raw.type === 'text' || raw.content !== undefined) {
+          const chunk = raw.content ?? raw.text ?? ''
+          setMessages((prev) => {
+            const updated = [...prev]
+            const last = updated[updated.length - 1]
+            if (last && last.role === 'assistant') {
+              last.content = (last.content || '') + chunk
+            }
+            return [...updated]
+          })
+          return
+        }
+
+        // Fallback plain string
+        if (typeof raw === 'string') {
+          setMessages((prev) => {
+            const updated = [...prev]
+            const last = updated[updated.length - 1]
+            if (last && last.role === 'assistant') {
+              last.content = (last.content || '') + raw
+            }
+            return [...updated]
+          })
+        }
+      } catch (err) {
+        console.warn('Lỗi parse SSE:', err)
       }
-      setMessages((prev) => {
-        const updated = [...prev]
-        const last = updated[updated.length - 1]
-        if (last.role === 'assistant') last.content += e.data
-        return [...updated]
-      })
     }
 
     eventSource.onerror = () => {
